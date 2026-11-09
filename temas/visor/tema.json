@@ -1,0 +1,123 @@
+{
+ "formato": 1,
+ "id": "visor",
+ "nome": "Visor",
+ "descricao": "Visor luminoso verde dos anos 80: sem ponteiro, arco de segmentos que acende até o valor, números digitais com os segmentos apagados ao fundo e brilho. Exemplo de pele sem imagens.",
+ "autor": "psascan",
+ "interface": {
+  "escuro": {
+   "accent": "#3dff9a",
+   "accent-ink": "#02140a",
+   "accent-soft": "#3dff9a24"
+  },
+  "claro": {
+   "accent": "#0f8a4b",
+   "accent-ink": "#ffffff",
+   "accent-soft": "#0f8a4b1f"
+  }
+ },
+ "painel": {
+  "cores": {
+   "fundo": "#000000",
+   "texto": "#5dffae",
+   "texto_medio": "#2fbf78",
+   "texto_fino": "#1a6b44",
+   "texto_apagado": "#2a7a52",
+   "passou": "#5dffae",
+   "ambar": "#ffd166",
+   "alerta": "#ff4f4f",
+   "ok": "#5dffae",
+   "aro": [
+    "#0b1a12",
+    "#050c08",
+    "#0a140e"
+   ],
+   "face": [
+    "#020805",
+    "#010402",
+    "#000000"
+   ],
+   "miolo": [
+    "#000000",
+    "#000000"
+   ],
+   "chanfro": [
+    "#000000",
+    "#000000",
+    "#000000"
+   ],
+   "agua_trilho": "#0b2116",
+   "luz_apagada": "#0b2116",
+   "rotulo_fundo": "#0b2116",
+   "rolo_fundo": "#000000",
+   "rolo_borda": "#1a6b44",
+   "rolo_texto": "#5dffae",
+   "superficie": "#03100a",
+   "superficie_2": "#020805",
+   "borda": "#0f3020",
+   "campo": "#010402",
+   "grafico_grade": "#08180f",
+   "grafico_limite": "#1a6b44"
+  },
+  "fonte": {
+   "web": {
+    "familia": "Barlow Condensed",
+    "arquivos": {}
+   },
+   "app": {
+    "sistema": "condensada",
+    "arquivo": null
+   }
+  },
+  "animacao": {
+   "ponteiro": "nenhuma",
+   "rapidez": 7
+  },
+  "peles": {
+   "mostrador": {
+    "angulo_inicio": -135,
+    "angulo_fim": 135,
+    "desenhar": {
+     "aro": false,
+     "escala": false,
+     "numeros": true,
+     "ponteiro": false,
+     "miolo": false
+    },
+    "arco": {
+     "mostrar": true,
+     "raio": 84,
+     "espessura": 11,
+     "estilo": "segmentos",
+     "segmentos": 40,
+     "cor": "#5dffae",
+     "cor_alerta": "#ff4f4f"
+    },
+    "digital": {
+     "tamanho": 44,
+     "cor": "#5dffae",
+     "brilho": 0.8,
+     "apagados": true
+    }
+   },
+   "barra": {
+    "estilo": "segmentos",
+    "segmentos": 24,
+    "espaco": 0.25,
+    "raio": 1
+   },
+   "numero": {
+    "brilho": 0.7,
+    "apagados": true
+   },
+   "numero_historico": {
+    "linha": 1.4,
+    "preencher": true
+   },
+   "luz": {
+    "brilho": 1
+   }
+  }
+ },
+ "mascote": null
+}

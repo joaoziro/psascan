@@ -1,0 +1,202 @@
+{
+ "formato": 1,
+ "id": "completo",
+ "nome": "Completo",
+ "descricao": "Todas as métricas da central, cada uma com o gráfico dos últimos segundos.",
+ "grade": {
+  "colunas": 16,
+  "linhas": 12
+ },
+ "orientacao": "qualquer",
+ "widgets": [
+  {
+   "id": "rpm",
+   "tipo": "numero_historico",
+   "metrica": "rpm",
+   "x": 0,
+   "y": 0,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "bateria",
+   "tipo": "numero_historico",
+   "metrica": "bateria",
+   "x": 4,
+   "y": 0,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "avanco",
+   "tipo": "numero_historico",
+   "metrica": "avanco",
+   "x": 8,
+   "y": 0,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "carga",
+   "tipo": "numero_historico",
+   "metrica": "carga",
+   "x": 12,
+   "y": 0,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "pedal",
+   "tipo": "estado",
+   "metrica": "pedal",
+   "x": 0,
+   "y": 2,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "borboleta",
+   "tipo": "numero_historico",
+   "metrica": "borboleta",
+   "x": 4,
+   "y": 2,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "map",
+   "tipo": "numero_historico",
+   "metrica": "map",
+   "x": 8,
+   "y": 2,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "pressao_atm",
+   "tipo": "numero_historico",
+   "metrica": "pressao_atm",
+   "x": 12,
+   "y": 2,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "agua",
+   "tipo": "numero_historico",
+   "metrica": "agua",
+   "x": 0,
+   "y": 4,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "ar",
+   "tipo": "numero_historico",
+   "metrica": "ar",
+   "x": 4,
+   "y": 4,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "bobina_14",
+   "tipo": "numero_historico",
+   "metrica": "bobina_14",
+   "x": 8,
+   "y": 4,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "bobina_23",
+   "tipo": "numero_historico",
+   "metrica": "bobina_23",
+   "x": 12,
+   "y": 4,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "injecao",
+   "tipo": "numero_historico",
+   "metrica": "injecao",
+   "x": 0,
+   "y": 6,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "motor_passo",
+   "tipo": "numero_historico",
+   "metrica": "motor_passo",
+   "x": 4,
+   "y": 6,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "lambda",
+   "tipo": "numero_historico",
+   "metrica": "lambda",
+   "x": 8,
+   "y": 6,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "velocidade",
+   "tipo": "numero_historico",
+   "metrica": "velocidade",
+   "x": 12,
+   "y": 6,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "rele_principal",
+   "tipo": "estado",
+   "metrica": "rele_principal",
+   "x": 0,
+   "y": 8,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "alim_central",
+   "tipo": "estado",
+   "metrica": "alim_central",
+   "x": 4,
+   "y": 8,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "luz_injecao",
+   "tipo": "estado",
+   "metrica": "luz_injecao",
+   "x": 8,
+   "y": 8,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "ac_termistor",
+   "tipo": "estado",
+   "metrica": "ac_termistor",
+   "x": 12,
+   "y": 8,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "ac_autorizacao",
+   "tipo": "estado",
+   "metrica": "ac_autorizacao",
+   "x": 0,
+   "y": 10,
+   "largura": 4,
+   "altura": 2
+  }
+ ]
+}

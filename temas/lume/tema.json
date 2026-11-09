@@ -1,0 +1,76 @@
+{
+ "formato": 1,
+ "id": "lume",
+ "nome": "Lume",
+ "descricao": "Mostrador translúcido iluminado por trás em verde-claro, números escuros, agulha vermelha com brilho e reflexo no vidro. Exemplo de pele com fundo e vidro em imagem.",
+ "autor": "psascan",
+ "interface": {
+  "escuro": {
+   "accent": "#7dffb0",
+   "accent-ink": "#04140b",
+   "accent-soft": "#7dffb024"
+  },
+  "claro": {
+   "accent": "#17803f",
+   "accent-ink": "#ffffff",
+   "accent-soft": "#17803f1f"
+  }
+ },
+ "painel": {
+  "cores": {
+   "ponteiro": [
+    "#ff8a70",
+    "#f0402a",
+    "#b8220f",
+    "#7d1407"
+   ],
+   "ponteiro_brilho": "#ff3b1f",
+   "ponteiro_aresta": "#ffd0c4",
+   "ambar": "#ffb03a"
+  },
+  "ponteiro": {
+   "estilo": "agulha",
+   "brilho": 0.9,
+   "sombra": 0.35
+  },
+  "escala": {
+   "niveis": 3,
+   "pintar_passou": false,
+   "numeros_por_cima": false
+  },
+  "peles": {
+   "mostrador": {
+    "imagens": {
+     "fundo": "arquivos/fundo.webp",
+     "vidro": "arquivos/vidro.webp"
+    },
+    "desenhar": {
+     "aro": true,
+     "escala": true,
+     "numeros": true
+    },
+    "cores": {
+     "texto": "#0f2a1a",
+     "texto_medio": "#1d4a2f",
+     "texto_fino": "#2c6a44",
+     "contorno_numeros": "#d6ffe2",
+     "alerta": "#c4210f",
+     "rolo_fundo": "#0f2a1a",
+     "rolo_borda": "#2c6a44",
+     "rolo_texto": "#d6ffe2",
+     "miolo": [
+      "#d9f7e2",
+      "#9fd3b0"
+     ],
+     "chanfro": [
+      "#f2fff6",
+      "#7fb894",
+      "#3c6e4f"
+     ],
+     "passou": "#0f2a1a"
+    }
+   }
+  }
+ },
+ "mascote": null
+}

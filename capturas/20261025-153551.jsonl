@@ -1,0 +1,47 @@
+{"t": 0.0002, "hora": "15:35:51", "dir": "nota", "texto": "cli: versao"}
+{"t": 1.4509, "hora": "15:35:52", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 1.4516, "hora": "15:35:52", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 1.615, "hora": "15:35:52", "dir": "rx", "hex": "80"}
+{"t": 1.63, "hora": "15:35:52", "dir": "rx", "hex": "05 98 06 00 30 64 c5 a2"}
+{"t": 1.6305, "hora": "15:35:52", "dir": "nota", "texto": "configurar linha K"}
+{"t": 1.6308, "hora": "15:35:52", "dir": "tx", "hex": "80 0a 07 00 04 00 00 00 68 3c 0b 05 89 e7"}
+{"t": 1.6619, "hora": "15:35:53", "dir": "rx", "hex": "80"}
+{"t": 1.6723, "hora": "15:35:53", "dir": "rx", "hex": "06 7f 07 07 00 00 00 29 8f"}
+{"t": 1.673, "hora": "15:35:53", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 07 07 00 00 00); reconectando"}
+{"t": 1.6732, "hora": "15:35:53", "dir": "nota", "texto": "fechado"}
+{"t": 2.4749, "hora": "15:35:53", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 2.4753, "hora": "15:35:53", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 2.6371, "hora": "15:35:53", "dir": "rx", "hex": "80"}
+{"t": 2.6449, "hora": "15:35:53", "dir": "rx", "hex": "05 98 06 00 30 64 c5 a2"}
+{"t": 2.6453, "hora": "15:35:53", "dir": "nota", "texto": "configurar linha K"}
+{"t": 2.6456, "hora": "15:35:53", "dir": "tx", "hex": "80 0a 07 00 04 00 00 00 68 3c 0b 05 89 e7"}
+{"t": 2.679, "hora": "15:35:54", "dir": "rx", "hex": "80 06 7f 07 07 00 00 00 29 8f"}
+{"t": 2.6797, "hora": "15:35:54", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 07 07 00 00 00); reconectando"}
+{"t": 2.68, "hora": "15:35:54", "dir": "nota", "texto": "fechado"}
+{"t": 3.9341, "hora": "15:35:55", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 3.9346, "hora": "15:35:55", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 4.068, "hora": "15:35:55", "dir": "rx", "hex": "80"}
+{"t": 4.0769, "hora": "15:35:55", "dir": "rx", "hex": "05 98 06 00 30 64 c5 a2"}
+{"t": 4.0773, "hora": "15:35:55", "dir": "nota", "texto": "configurar linha K"}
+{"t": 4.0777, "hora": "15:35:55", "dir": "tx", "hex": "80 0a 07 00 04 00 00 00 68 3c 0b 05 89 e7"}
+{"t": 4.1088, "hora": "15:35:55", "dir": "rx", "hex": "80"}
+{"t": 4.1241, "hora": "15:35:55", "dir": "rx", "hex": "06 7f 07 07 00 00 00 29 8f"}
+{"t": 4.1248, "hora": "15:35:55", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 07 07 00 00 00); reconectando"}
+{"t": 4.125, "hora": "15:35:55", "dir": "nota", "texto": "fechado"}
+{"t": 6.4131, "hora": "15:35:57", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 6.4136, "hora": "15:35:57", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 6.5721, "hora": "15:35:57", "dir": "rx", "hex": "80 05 98 06 00 30 64 c5 a2"}
+{"t": 6.5726, "hora": "15:35:57", "dir": "nota", "texto": "configurar linha K"}
+{"t": 6.5728, "hora": "15:35:57", "dir": "tx", "hex": "80 0a 07 00 04 00 00 00 68 3c 0b 05 89 e7"}
+{"t": 6.6311, "hora": "15:35:57", "dir": "rx", "hex": "80 06 7f 07 07 00 00 00 29 8f"}
+{"t": 6.6315, "hora": "15:35:57", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 07 07 00 00 00); reconectando"}
+{"t": 6.6317, "hora": "15:35:57", "dir": "nota", "texto": "fechado"}
+{"t": 12.6629, "hora": "15:36:04", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 12.6636, "hora": "15:36:04", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 12.825, "hora": "15:36:04", "dir": "rx", "hex": "80 05 98 06 00 30 64 c5"}
+{"t": 12.832, "hora": "15:36:04", "dir": "rx", "hex": "a2"}
+{"t": 12.8324, "hora": "15:36:04", "dir": "nota", "texto": "configurar linha K"}
+{"t": 12.8327, "hora": "15:36:04", "dir": "tx", "hex": "80 0a 07 00 04 00 00 00 68 3c 0b 05 89 e7"}
+{"t": 12.8661, "hora": "15:36:04", "dir": "rx", "hex": "80 06 7f 07 07 00 00 00 29 8f"}
+{"t": 12.8667, "hora": "15:36:04", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 07 07 00 00 00); reconectando"}
+{"t": 12.8669, "hora": "15:36:04", "dir": "nota", "texto": "fechado"}

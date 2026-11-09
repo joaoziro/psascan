@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- mostrador: aro, marcas âmbar até o ponteiro laranja, brancas depois -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <path android:strokeColor="#2E2E2E" android:strokeWidth="4" android:fillColor="#000000"
+        android:pathData="M54,26a28,28 0 1,1 0,56a28,28 0 1,1 0,-56z" />
+    <path android:strokeColor="#F4CF5A" android:strokeWidth="3"
+        android:pathData="M36.7,67.3 A24,24 0 0,1 47.8,31.8" />
+    <path android:strokeColor="#F1F0EB" android:strokeWidth="3"
+        android:pathData="M60.2,31.8 A24,24 0 0,1 71.3,67.3" />
+    <path android:strokeColor="#FF7A1A" android:strokeWidth="4" android:strokeLineCap="round"
+        android:pathData="M58.5,47 L67,33" />
+</vector>

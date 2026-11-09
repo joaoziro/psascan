@@ -1,0 +1,86 @@
+{
+ "formato": 1,
+ "id": "giro-grande",
+ "nome": "Giro grande",
+ "descricao": "Um conta-giros grande com a velocidade em digital no meio e barras de água e bateria ao lado.",
+ "grade": {
+  "colunas": 12,
+  "linhas": 6
+ },
+ "orientacao": "paisagem",
+ "widgets": [
+  {
+   "id": "giros",
+   "tipo": "mostrador",
+   "metrica": "rpm",
+   "x": 0,
+   "y": 0,
+   "largura": 8,
+   "altura": 6,
+   "opcoes": {
+    "escala": {
+     "min": 0,
+     "max": 7000,
+     "maior": 1000,
+     "divisor_rotulo": 1000,
+     "alerta": 6500
+    },
+    "centro": {
+     "conteudo": "metrica",
+     "metrica": "velocidade"
+    }
+   }
+  },
+  {
+   "id": "agua",
+   "tipo": "barra",
+   "metrica": "agua",
+   "x": 8,
+   "y": 0,
+   "largura": 4,
+   "altura": 2,
+   "opcoes": {
+    "orientacao": "horizontal",
+    "min": 40,
+    "max": 130,
+    "mostrar_valor": true
+   }
+  },
+  {
+   "id": "bat",
+   "tipo": "barra",
+   "metrica": "bateria",
+   "x": 8,
+   "y": 2,
+   "largura": 4,
+   "altura": 2,
+   "opcoes": {
+    "orientacao": "horizontal",
+    "min": 10,
+    "max": 16,
+    "mostrar_valor": true
+   }
+  },
+  {
+   "id": "luz",
+   "tipo": "luz",
+   "metrica": "luz_injecao",
+   "x": 8,
+   "y": 4,
+   "largura": 2,
+   "altura": 2
+  },
+  {
+   "id": "falha",
+   "tipo": "luz",
+   "x": 10,
+   "y": 4,
+   "largura": 2,
+   "altura": 2,
+   "opcoes": {
+    "fonte": "falhas",
+    "rotulo": "falha"
+   }
+  }
+ ]
+}

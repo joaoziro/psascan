@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-files-path name="gravacoes" path="PSA/" />
+    <files-path name="gravacoes_internas" path="PSA/" />
+    <cache-path name="temas" path="temas/" />
+    <cache-path name="layouts" path="layouts/" />
+</paths>

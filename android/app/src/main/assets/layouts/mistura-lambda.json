@@ -1,0 +1,88 @@
+{
+ "formato": 1,
+ "id": "mistura-lambda",
+ "nome": "Mistura e lambda",
+ "descricao": "Sonda lambda em destaque, com o veredito, a injeção e o que mexe na mistura.",
+ "grade": {
+  "colunas": 12,
+  "linhas": 6
+ },
+ "orientacao": "paisagem",
+ "widgets": [
+  {
+   "id": "lambda",
+   "tipo": "numero_historico",
+   "metrica": "lambda",
+   "x": 0,
+   "y": 0,
+   "largura": 8,
+   "altura": 4,
+   "opcoes": {
+    "segundos": 30
+   }
+  },
+  {
+   "id": "injecao",
+   "tipo": "numero_historico",
+   "metrica": "injecao",
+   "x": 8,
+   "y": 0,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "map",
+   "tipo": "numero_historico",
+   "metrica": "map",
+   "x": 8,
+   "y": 2,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "veredito",
+   "tipo": "estado",
+   "metrica": "lambda",
+   "x": 0,
+   "y": 4,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "agua",
+   "tipo": "numero",
+   "metrica": "agua",
+   "x": 4,
+   "y": 4,
+   "largura": 2,
+   "altura": 2,
+   "opcoes": {
+    "mostrar_estado": true
+   }
+  },
+  {
+   "id": "rpm",
+   "tipo": "numero",
+   "metrica": "rpm",
+   "x": 6,
+   "y": 4,
+   "largura": 3,
+   "altura": 2
+  },
+  {
+   "id": "carga",
+   "tipo": "barra",
+   "metrica": "carga",
+   "x": 9,
+   "y": 4,
+   "largura": 3,
+   "altura": 2,
+   "opcoes": {
+    "orientacao": "horizontal",
+    "min": 0,
+    "max": 100,
+    "mostrar_valor": true
+   }
+  }
+ ]
+}

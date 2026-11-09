@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color">
+<title>Painel 306</title>
+<!-- Protótipo do painel do app Android: dois mostradores analógicos. Lê /api/estado do web.py; com ?demo varre
+     os valores sozinho. Todo o visual vem do tema ativo (/api/tema e /api/tema.css, docs/TEMA.md). -->
+<link rel="stylesheet" href="/api/tema.css" id="tema-css">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; background: var(--painel-fundo); color: var(--painel-texto); font-family: var(--fonte, sans-serif);
+    -webkit-font-smoothing: antialiased; overflow: hidden; user-select: none; }
+  body { display: grid; grid-template-rows: auto 1fr auto; padding: 14px 16px; }
+  .topo, .base { display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; letter-spacing: .04em; color: var(--painel-texto-apagado); font-variant-numeric: tabular-nums; }
+  .topo .hora { color: var(--painel-texto); opacity: .8; }
+  .ponto { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--painel-texto-apagado);
+    margin-right: 6px; vertical-align: 1px; }
+  .ponto.ok { background: var(--painel-ok); box-shadow: 0 0 6px var(--painel-ok); }
+  #cena { display: flex; align-items: center; justify-content: center; gap: 2vmin; min-height: 0; }
+  #cena svg { display: block; height: auto; overflow: visible; }
+  .lateral, .central { width: min(38vw, 66vh); }
+  /* coluna central entre os mostradores: luz da injeção, bateria e ar */
+  .info { display: grid; gap: 22px; justify-items: center; align-self: center; min-width: 96px; }
+  .dado { display: grid; justify-items: center; gap: 4px; }
+  .dado .selo { font-size: 10px; padding: 2px 7px; letter-spacing: .14em; border-color: transparent; background: var(--painel-rotulo-fundo); }
+  .dado b { font-weight: 400; font-size: 24px; font-variant-numeric: tabular-nums; line-height: 1; }
+  .dado b.alerta { color: var(--painel-ambar); }
+  .dado small { font-size: 10px; color: var(--painel-texto-apagado); margin-top: -2px; }
+  .luz { display: grid; justify-items: center; color: var(--painel-luz-apagada); }
+  .luz svg { width: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+  .luz.acesa { color: var(--painel-ambar); filter: drop-shadow(0 0 5px var(--painel-ambar)); }
+  .selo { border: 1px solid currentColor; border-radius: var(--r-rotulo, 0); padding: 2px 9px; font-size: 12px;
+    letter-spacing: .12em; }
+  .selo.ambar { color: var(--painel-ambar); } .selo.verde { color: var(--painel-ok); } .selo.vermelho { color: var(--painel-alerta); }
+  button.selo { background: none; font: inherit; font-size: 12px; cursor: pointer; }
+  @media (orientation: portrait) {
+    #cena { flex-wrap: wrap; align-content: center; }
+    .lateral, .central { width: min(78vw, 39vh); }
+    .info { order: 3; width: 100%; grid-template-columns: repeat(3, 1fr); align-items: end; }
+  }
+</style>
+</head>
+<body>
+<div class="topo">
+  <span id="conexao"><i class="ponto"></i>—</span>
+  <span class="hora" id="hora">--:--</span>
+</div>
+<div id="cena"></div>
+<div class="base">
+  <span class="selo ambar" id="modo">PSA · SL96</span>
+  <button class="selo verde" id="btn-ler" type="button">LER</button>
+</div>
+<script>
+const NS = 'http://www.w3.org/2000/svg';
+const DEMO = new URLSearchParams(location.search).has('demo');
+// ids das métricas do perfil em /api/estado → valores[]
+const P = { rpm: 'rpm', bat: 'bateria', agua: 'agua', ar: 'ar', vel: 'velocidade', luz: 'luz_injecao' };
+
+function el(tag, at = {}, pai) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in at) e.setAttribute(k, at[k]);
+  if (pai) pai.append(e);
+  return e;
+}
+const rad = g => (g - 90) * Math.PI / 180;
+const pol = (cx, cy, r, g) => [cx + r * Math.cos(rad(g)), cy + r * Math.sin(rad(g))];
+function arco(cx, cy, r, g0, g1) {
+  const [x0, y0] = pol(cx, cy, r, g0), [x1, y1] = pol(cx, cy, r, g1);
+  return `M${x0} ${y0} A${r} ${r} 0 ${g1 - g0 > 180 ? 1 : 0} 1 ${x1} ${y1}`;
+}
+
+// ---- tema: tudo o que se vê vem de `painel` do tema ativo (docs/TEMA.md) ----
+let T = null, C = null, COR = null, LAY = null;   // painel, cores, cores da escala, raios da escala
+let montado = null;                                // referências dos mostradores desenhados
+
+// degradê: lista de [posição, cor]
+function degrade(pai, tipo, at, paradas) {
+  const g = el(tipo, at, pai);
+  for (const [offset, cor] of paradas) el('stop', { offset, 'stop-color': cor }, g);
+  return g;
+}
+
+// Moldura: aro fino com volume e o fundo do mostrador levemente mais claro no meio (profundidade).
+function moldura(svg, id) {
+  const d = el('defs', {}, svg);
+  degrade(d, 'linearGradient', { id: id + 'a', x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, C.aro[0]], [.5, C.aro[1]], [1, C.aro[2]]]);
+  degrade(d, 'radialGradient', { id: id + 'f', cx: .5, cy: .5, r: .5 }, [[0, C.face[0]], [.7, C.face[1]], [1, C.face[2]]]);
+  // sombra que o ponteiro e o miolo projetam no fundo (sombra 1 = opacidade .85 × 100/55: o Padrão, com .55, dá .85)
+  const sp = el('filter', { id: id + 's', x: -.5, y: -.5, width: 2, height: 2 }, d);
+  el('feDropShadow', { dx: .9, dy: 1.6, stdDeviation: 1.1, 'flood-color': C.sombra,
+    'flood-opacity': Math.min(1, T.ponteiro.sombra * 85 / 55) }, sp);
+  const bl = el('filter', { id: id + 'b', x: -1, y: -1, width: 3, height: 3 }, d);
+  el('feGaussianBlur', { stdDeviation: 2 }, bl);
+  // ponteiro: tinta fosca com uma aresta clara no meio (seção em "telhado")
+  degrade(d, 'linearGradient', { id: id + 'p', x1: 0, y1: 0, x2: 1, y2: 0 },
+    [[0, C.ponteiro[0]], [.48, C.ponteiro[1]], [.52, C.ponteiro[2]], [1, C.ponteiro[3]]]);
+  // miolo: disco escuro em relevo, com borda chanfrada (clara em cima, escura embaixo)
+  degrade(d, 'radialGradient', { id: id + 'm', cx: .5, cy: .38, r: .65 }, [[0, C.miolo[0]], [1, C.miolo[1]]]);
+  degrade(d, 'linearGradient', { id: id + 'c', x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, C.chanfro[0]], [.5, C.chanfro[1]], [1, C.chanfro[2]]]);
+  const rInt = 99.5 - T.espessuras.aro;     // o aro ocupa de 99,5 para dentro; depois um anel fino escuro
+  el('circle', { cx: 100, cy: 100, r: 99.5, fill: `url(#${id}a)` }, svg);
+  el('circle', { cx: 100, cy: 100, r: rInt, fill: C.aro_interno }, svg);
+  el('circle', { cx: 100, cy: 100, r: rInt - .8, fill: `url(#${id}f)` }, svg);
+}
+
+// Miolo por cima do ponteiro: o ponteiro sai de trás dele. Disco em relevo com sombra no fundo.
+function miolo(svg, id, r) {
+  el('circle', { cx: 100, cy: 100, r, fill: `url(#${id}m)`, filter: `url(#${id}s)` }, svg);
+  el('circle', { cx: 100, cy: 100, r: r - .5, fill: 'none', stroke: `url(#${id}c)`, 'stroke-width': 1 }, svg);
+  el('circle', { cx: 100, cy: 100, r: r - 3, fill: 'none', stroke: C.sombra, 'stroke-opacity': .6, 'stroke-width': .6 }, svg);
+}
+
+// Escala em até três níveis — régua fina na borda, traço médio, barra grossa — e números por dentro.
+// Tudo que o ponteiro já passou fica com a cor `passou` (se o tema pedir); o resto, branco/cinza. Devolve ang(), pintar(v)
+// e a camada dos números (que o chamador põe acima do ponteiro quando `numeros_por_cima`).
+function escala(svg, { g0, g1, min, max, maior, medio, fino, rotulo, alerta, rNum, tamNum }) {
+  const E = T.espessuras, tres = T.escala.niveis === 3, passar = T.escala.pintar_passou;
+  const numeros = el('g', { class: 'numeros' }, svg);   // camada própria: pode ir para cima do ponteiro
+  const ang = v => g0 + (v - min) / (max - min) * (g1 - g0), itens = [];
+  const perto = (v, p) => Math.abs(v / p - Math.round(v / p)) < 1e-6;
+  const quando = (v, e, attr, nao, sim) => itens.push({ v, e, attr, nao, sim });
+  if (alerta != null) el('path', { d: arco(100, 100, LAY.alerta, ang(alerta), g1), stroke: COR.vermelho,
+    'stroke-width': E.alerta, fill: 'none' }, svg);
+  const n = Math.round((max - min) / fino);
+  for (let k = 0; k <= n; k++) {
+    const v = min + k * fino, g = ang(v), quente = alerta != null && v >= alerta;
+    const nivel = perto(v, maior) ? 'grande' : perto(v, medio) ? 'medio' : 'fino';
+    if (nivel === 'fino' && !tres) continue;
+    const [r0, r1, w] = LAY[nivel];
+    const [x0, y0] = pol(100, 100, r0, g), [x1, y1] = pol(100, 100, r1, g);
+    const ln = el('line', { x1: x0, y1: y0, x2: x1, y2: y1, 'stroke-width': w }, svg);
+    const base = quente ? COR.vermelho : COR[nivel];
+    quando(v, ln, 'stroke', base, quente ? COR.vermelho : passar ? COR.passou : base);
+    if (nivel === 'grande') {
+      const [tx, ty] = pol(100, 100, rNum, g);
+      const at = { x: tx, y: ty, 'text-anchor': 'middle', 'dominant-baseline': 'central',
+        'font-size': tamNum, 'font-weight': 500, 'letter-spacing': -.3 };
+      if (E.contorno_numeros > 0) Object.assign(at, { stroke: C.contorno_numeros, 'stroke-width': E.contorno_numeros,
+        'stroke-linejoin': 'round', 'paint-order': 'stroke' });
+      const t = el('text', at, numeros);
+      t.textContent = rotulo(v);
+      const cor = quente ? COR.vermelho : COR.grande;
+      quando(v, t, 'fill', cor, quente ? COR.vermelho : passar ? COR.passou : cor);
+    }
+  }
+  // a régua fina também passa por baixo dos traços médios e grandes, contínua como na referência
+  for (let k = 0; tres && k <= n; k++) {
+    const v = min + k * fino;
+    if (!perto(v, medio)) continue;
+    const g = ang(v), quente = alerta != null && v >= alerta;
+    const [x0, y0] = pol(100, 100, LAY.regua[0], g), [x1, y1] = pol(100, 100, LAY.regua[1], g);
+    const base = quente ? COR.vermelho : COR.fino;
+    quando(v, el('line', { x1: x0, y1: y0, x2: x1, y2: y1, 'stroke-width': E.traco_fino }, svg), 'stroke',
+      base, quente ? COR.vermelho : passar ? COR.passou : base);
+  }
+  const pintar = valor => {
+    for (const it of itens) {
+      const c = it.v <= valor + 1e-9 && valor > min ? it.sim : it.nao;
+      if (it.cor !== c) { it.e.setAttribute(it.attr, c); it.cor = c; }
+    }
+  };
+  pintar(min);
+  return { ang, pintar, numeros };
+}
+
+// Ponteiro, começando escondido sob o miolo. Estilos: agulha (afina até a ponta), seta (agulha com cabeça) e barra
+// (largura constante). Tinta com aresta clara, brilho leve e sombra.
+function ponteiro(svg, id, r0, r1) {
+  const g = el('g', {}, svg), y0 = 100 - r0, y1 = 100 - r1, b = T.espessuras.ponteiro_base, p = T.espessuras.ponteiro_ponta;
+  let forma = `M${100 - b} ${y0} L${100 - p} ${y1} L${100 + p} ${y1} L${100 + b} ${y0} Z`;
+  if (T.ponteiro.estilo === 'barra') forma = `M${100 - b} ${y0} L${100 - b} ${y1} L${100 + b} ${y1} L${100 + b} ${y0} Z`;
+  if (T.ponteiro.estilo === 'seta') {
+    const yh = y1 + Math.min(14, (r1 - r0) * .25), s = Math.max(p, b * .5), hw = Math.max(b * 2.2, p * 2);
+    forma = `M${100 - b} ${y0} L${100 - s} ${yh} L${100 - hw} ${yh} L${100 - p} ${y1} L${100 + p} ${y1} ` +
+      `L${100 + hw} ${yh} L${100 + s} ${yh} L${100 + b} ${y0} Z`;
+  }
+  if (T.ponteiro.brilho > 0) el('path', { d: forma, fill: C.ponteiro_brilho, opacity: T.ponteiro.brilho, filter: `url(#${id}b)` }, g);
+  el('path', { d: forma, fill: `url(#${id}p)`, filter: `url(#${id}s)` }, g);
+  el('line', { x1: 100, y1: y0, x2: 100, y2: y1 + 1, stroke: C.ponteiro_aresta, 'stroke-opacity': .3, 'stroke-width': .35 }, g);
+  return graus => g.setAttribute('transform', `rotate(${graus} 100 100)`);
+}
+
+function texto(svg, x, y, tam, at = {}) {
+  return el('text', Object.assign({ x, y, 'text-anchor': 'middle', 'dominant-baseline': 'central',
+    'font-size': tam, fill: COR.grande }, at), svg);
+}
+
+const cena = document.getElementById('cena');
+const mostrador = classe => el('svg', { viewBox: '0 0 200 200', class: classe }, cena);
+
+// coluna central: luz da injeção e dados pequenos com rótulo preenchido
+const DADOS = [
+  { k: 'bat', rot: 'BATERIA', un: 'V', cor: 'verde', dec: 1, alerta: v => v < 12.4 || v > 14.8 },
+  { k: 'ar', rot: 'AR', un: '°C', cor: 'ambar', dec: 0, alerta: v => v > 65 },
+];
+// água: 50 a 130 °C, frio à esquerda; barra contínua preenchida até o valor
+const AG0 = 148, AG1 = 212, angAg = c => AG1 - (Math.min(130, Math.max(50, c)) - 50) / 80 * (AG1 - AG0);
+
+// Desenha os dois mostradores com o tema atual (de novo a cada troca de tema).
+function montar() {
+  const E = T.espessuras, Z = T.ponteiro, em_cima = T.escala.numeros_por_cima, rm = T.raios.miolo;
+  cena.replaceChildren();
+  COR = { passou: C.passou, grande: C.texto, medio: C.texto_medio, fino: C.texto_fino, vermelho: C.alerta };
+  LAY = { grande: [84, 72.5, E.traco_grande], medio: [84, 78, E.traco_medio], fino: [88.4, 85, E.traco_fino],
+          regua: [88.4, 85], alerta: 89.6 };
+
+  // ---- conta-giros (esquerda) ----
+  const sRpm = mostrador('lateral rpm');
+  moldura(sRpm, 'r');
+  const eRpm = escala(sRpm, { g0: -128, g1: 128, min: 0, max: 7000, maior: 1000, medio: 500, fino: 100,
+    rotulo: v => v / 1000, alerta: 6500, rNum: 60, tamNum: 16 });
+  // camadas: fundo e marcas (e números, se não forem por cima) → ponteiro → números por cima → miolo em relevo → leituras
+  const pRpm = ponteiro(sRpm, 'r', Z.raio_inicio, Z.raio_ponta);
+  if (em_cima) sRpm.append(eRpm.numeros);
+  miolo(sRpm, 'r', rm);
+  texto(sRpm, 100, 85, 7, { fill: COR.fino, 'letter-spacing': 1.8 }).textContent = 'RPM';
+  // leitura exata em "rolos" de odômetro, dentro do miolo
+  const rolos = [];
+  for (let k = 0; k < 4; k++) {
+    const milhar = k === 0;           // o primeiro rolo (milhares) em destaque
+    el('rect', { x: 78.5 + k * 11, y: 94, width: 10, height: 14, rx: 1.2,
+      fill: milhar ? C.rolo_destaque_fundo : C.rolo_fundo, stroke: milhar ? C.rolo_destaque_borda : C.rolo_borda,
+      'stroke-width': .6 }, sRpm);
+    rolos.push(texto(sRpm, 83.5 + k * 11, 101.4, 10, { 'font-variant-numeric': 'tabular-nums',
+      fill: milhar ? C.rolo_destaque_texto : C.rolo_texto }));
+  }
+
+  // ---- velocímetro (direita) com a temperatura da água no arco de baixo ----
+  const sVel = mostrador('central');
+  moldura(sVel, 'v');
+  const eVel = escala(sVel, { g0: -128, g1: 128, min: 0, max: 200, maior: 20, medio: 10, fino: 2,
+    rotulo: v => v, rNum: 58.5, tamNum: 12.5 });
+  el('path', { d: arco(100, 100, 55.25, AG0, AG1), stroke: C.agua_trilho, 'stroke-width': E.agua, fill: 'none' }, sVel);
+  const barraAg = el('path', { 'stroke-width': E.agua, fill: 'none' }, sVel);
+  for (const [c, r0, r1, w, cor] of [[90, 50, 60.5, 1.6, COR.grande], [70, 52.5, 59.5, .8, COR.fino],
+                                    [110, 52.5, 59.5, .8, COR.fino], [127, 51, 60, 2.2, COR.vermelho]]) {
+    const [x0, y0] = pol(100, 100, r0, angAg(c)), [x1, y1] = pol(100, 100, r1, angAg(c));
+    el('line', { x1: x0, y1: y0, x2: x1, y2: y1, 'stroke-width': w, stroke: cor }, sVel);
+  }
+  for (const [c, s] of [[50, 'C'], [130, 'H']]) {
+    const [x, y] = pol(100, 100, 47, angAg(c) + (c === 50 ? -3 : 3));
+    texto(sVel, x, y - 4, 6.5, { fill: COR.medio }).textContent = s;
+  }
+  const pVel = ponteiro(sVel, 'v', Z.raio_inicio, Z.raio_ponta);
+  if (em_cima) sVel.append(eVel.numeros);
+  miolo(sVel, 'v', rm);
+  const tVel = texto(sVel, 100, 95, 34, { 'font-weight': 400, 'letter-spacing': -.5, 'font-variant-numeric': 'tabular-nums' });
+  texto(sVel, 100, 116, 8, { fill: COR.fino }).textContent = 'km/h';
+  const termo = el('path', { d: 'M0 -4v5.2a1.9 1.9 0 1 0 1.6 0V-4a.8 .8 0 0 0-1.6 0z M2.6 -2.5h1.6 M2.6 -.5h1.2',
+    fill: 'none', 'stroke-width': .7, transform: 'translate(87 132)' }, sVel);
+  const tAg = texto(sVel, 102, 132, 7.5, { 'font-variant-numeric': 'tabular-nums' });
+
+  // ---- coluna central ----
+  const info = document.createElement('div');
+  info.className = 'info';
+  info.innerHTML = `<div class="luz" id="luz" title="luz de injeção" role="img" aria-label="luz de injeção"><svg viewBox="0 0 33 30"><path d="M1.5 10.5H5.5L8.5 7.6H17.4L21 11.4H25V8.8H28A3.5 3.5 0 0 1 31.5 12.3V20.7A3.5 3.5 0 0 1 28 24.2H25V22.5H21V27.5H9.5L5.5 23.5H1.5Z M7.5 3.5H18.5 M13 3.5V7.6"/></svg></div>` +
+    DADOS.map(d => `<div class="dado"><span class="selo ${d.cor}">${d.rot}</span><b id="d-${d.k}">—</b><small>${d.un}</small></div>`).join('');
+  cena.insertBefore(info, sVel);   // entre o conta-giros e o velocímetro
+  montado = { pRpm, eRpm, pVel, eVel, rolos, tVel, tAg, termo, barraAg };
+}
+
+// ---- animação: o ponteiro persegue o valor lido ----
+// mola = com inércia (rapidez do tema); suave = interpolação curta (3× mais rápida); nenhuma = pula direto
+const alvo = { rpm: 0, vel: 0, agua: 20, luz: null }, atual = { rpm: 0, vel: 0, agua: 20 }, dados = {};
+let ultimoQuadro = performance.now();
+function quadro(t) {
+  requestAnimationFrame(quadro);
+  const dt = Math.min(.1, (t - ultimoQuadro) / 1000); ultimoQuadro = t;
+  if (!montado) return;
+  const { pRpm, eRpm, pVel, eVel, rolos, tVel, tAg, termo, barraAg } = montado;
+  const modo = T.animacao.ponteiro, rap = T.animacao.rapidez;
+  const k = modo === 'nenhuma' ? 1 : 1 - Math.exp(-dt * rap * (modo === 'suave' ? 3 : 1));
+  for (const c in atual) atual[c] += (alvo[c] - atual[c]) * k;
+  pRpm(eRpm.ang(Math.min(7150, atual.rpm))); eRpm.pintar(atual.rpm);
+  pVel(eVel.ang(Math.min(204, atual.vel))); eVel.pintar(atual.vel);
+  String(Math.round(alvo.rpm / 10) * 10).padStart(4, '0').split('').forEach((c, k) => rolos[k].textContent = c);
+  tVel.textContent = Math.round(atual.vel);
+  const corAg = alvo.agua >= 110 ? COR.vermelho : alvo.agua < 70 ? COR.passou : C.ok, limiteAg = angAg(atual.agua);
+  barraAg.setAttribute('d', arco(100, 100, 55.25, Math.min(limiteAg, AG1 - .5), AG1));
+  barraAg.setAttribute('stroke', corAg);
+  tAg.setAttribute('fill', corAg); termo.setAttribute('stroke', corAg);
+  tAg.textContent = Math.round(alvo.agua) + ' °C';
+  document.getElementById('luz').classList.toggle('acesa', alvo.luz === true);
+  for (const d of DADOS) {
+    const v = dados[d.k], e = document.getElementById('d-' + d.k);
+    e.textContent = v == null || isNaN(v) ? '—' : v.toFixed(d.dec).replace('.', ',');
+    e.classList.toggle('alerta', v != null && !!d.alerta && d.alerta(v));
+  }
+}
+requestAnimationFrame(quadro);
+
+// ---- tema ativo: busca, aplica fonte/raio/barra do sistema e redesenha ----
+async function carregarTema() {
+  const t = await (await fetch('/api/tema', { cache: 'no-store' })).json();
+  T = t.painel; C = T.cores;
+  const raiz = document.documentElement.style;
+  raiz.setProperty('--fonte', `"${T.fonte.web.familia}", sans-serif`);
+  raiz.setProperty('--r-rotulo', T.raios.rotulo + 'px');
+  document.querySelector('meta[name=theme-color]').content = C.fundo;
+  for (const x of cena.querySelectorAll('svg')) x.remove();
+  montar();
+}
+// as variáveis --painel-* (CSS) acompanham: o CSS novo carrega ao lado do velho, que só sai depois
+function recarregarCss() {
+  return new Promise(res => {
+    const velho = document.getElementById('tema-css'), novo = document.createElement('link');
+    novo.rel = 'stylesheet'; novo.href = '/api/tema.css?v=' + Date.now();
+    novo.onload = novo.onerror = () => { velho.remove(); novo.id = 'tema-css'; res(); };
+    velho.after(novo);
+  });
+}
+async function trocarTema() { await recarregarCss(); await carregarTema(); }
+new EventSource('/api/stream').addEventListener('tema', () => trocarTema());   // também no ?demo
+
+const num = s => parseFloat(String(s).replace(',', '.'));
+async function ler() {
+  if (!T) return;
+  if (DEMO) {
+    const s = performance.now() / 1000;
+    alvo.vel = 95 + 85 * Math.sin(s / 4); alvo.rpm = 900 + alvo.vel * 28 + 300 * Math.sin(s * 1.3);
+    alvo.agua = 60 + Math.min(35, s * 2); alvo.luz = Math.sin(s / 6) > .7;
+    Object.assign(dados, { bat: 13.9 + .2 * Math.sin(s), ar: 31 });
+    estadoConexao('demo', true); return;
+  }
+  try {
+    const e = await (await fetch('/api/estado', { cache: 'no-store' })).json();
+    estadoConexao(e.rodando ? 'lendo · ' + e.taxa_hz + ' Hz' : e.conexao, e.rodando);
+    document.getElementById('btn-ler').hidden = !!e.rodando;
+    if (!e.rodando || !e.valores) return;
+    const v = {};
+    for (const x of e.valores) v[x.id] = x;
+    const vazio = { valor: null, raw: null };
+    for (const k in P) if (!v[P[k]]) v[P[k]] = vazio;   // bloco ainda não lido (modo rápido)
+    alvo.rpm = num(v[P.rpm].valor) || 0; alvo.vel = num(v[P.vel].valor) || 0;
+    alvo.agua = num(v[P.agua].valor);
+    alvo.luz = v[P.luz].raw === 1;
+    for (const d of DADOS) dados[d.k] = num(v[P[d.k]].valor);
+  } catch { estadoConexao('sem servidor', false); }
+}
+function estadoConexao(txt, ok) {
+  document.getElementById('conexao').innerHTML = `<i class="ponto${ok ? ' ok' : ''}"></i>${txt}`;
+}
+document.getElementById('btn-ler').onclick = async () => {
+  await fetch('/api/conectar', { method: 'POST' });
+  await fetch('/api/completo', { method: 'POST' });
+};
+carregarTema().then(() => { setInterval(ler, DEMO ? 100 : 300); ler(); });
+setInterval(() => { document.getElementById('hora').textContent =
+  new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); }, 1000);
+</script>
+</body>
+</html>

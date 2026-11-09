@@ -1,0 +1,107 @@
+{"t": 0.0, "hora": "16:15:46", "dir": "nota", "texto": "cli: ao-vivo --completo -n 3"}
+{"t": 4.9561, "hora": "16:15:51", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 4.9574, "hora": "16:15:51", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 5.1637, "hora": "16:15:51", "dir": "rx", "hex": "80 05 98 06 00 30 64 c5 a2"}
+{"t": 5.166, "hora": "16:15:51", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 5.1664, "hora": "16:15:51", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 5.2267, "hora": "16:15:51", "dir": "rx", "hex": "80 06 7f 13 07 00 00 00 79 16"}
+{"t": 5.2274, "hora": "16:15:51", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 13 07 00 00 00); reconectando"}
+{"t": 5.2278, "hora": "16:15:51", "dir": "nota", "texto": "fechado"}
+{"t": 6.0112, "hora": "16:15:52", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 6.0117, "hora": "16:15:52", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 6.2009, "hora": "16:15:52", "dir": "rx", "hex": "80 05 98 06 00 30 64 c5"}
+{"t": 6.226, "hora": "16:15:52", "dir": "rx", "hex": "a2"}
+{"t": 6.2266, "hora": "16:15:52", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 6.227, "hora": "16:15:52", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 6.2868, "hora": "16:15:52", "dir": "rx", "hex": "80 06 7f 13 07 00 00 00 79 16"}
+{"t": 6.2876, "hora": "16:15:52", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 13 07 00 00 00); reconectando"}
+{"t": 6.2878, "hora": "16:15:52", "dir": "nota", "texto": "fechado"}
+{"t": 7.5418, "hora": "16:15:53", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 7.5424, "hora": "16:15:53", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 7.7358, "hora": "16:15:54", "dir": "rx", "hex": "80 05 98 06 00 30 64 c5 a2"}
+{"t": 7.7365, "hora": "16:15:54", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 7.7369, "hora": "16:15:54", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 7.7948, "hora": "16:15:54", "dir": "rx", "hex": "80 06 7f 13 07 00 00 00 79 16"}
+{"t": 7.7954, "hora": "16:15:54", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 13 07 00 00 00); reconectando"}
+{"t": 7.7958, "hora": "16:15:54", "dir": "nota", "texto": "fechado"}
+{"t": 10.0591, "hora": "16:15:56", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 10.0595, "hora": "16:15:56", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 10.2509, "hora": "16:15:56", "dir": "rx", "hex": "80"}
+{"t": 10.262, "hora": "16:15:56", "dir": "rx", "hex": "05 98 06 00 30 64 c5 a2"}
+{"t": 10.2624, "hora": "16:15:56", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 10.2627, "hora": "16:15:56", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 10.3242, "hora": "16:15:56", "dir": "rx", "hex": "80 06 7f 13 07 00 00 00 79 16"}
+{"t": 10.3249, "hora": "16:15:56", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 13 07 00 00 00); reconectando"}
+{"t": 10.3336, "hora": "16:15:56", "dir": "nota", "texto": "fechado"}
+{"t": 18.9889, "hora": "16:16:05", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 18.9895, "hora": "16:16:05", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 19.179, "hora": "16:16:05", "dir": "rx", "hex": "80"}
+{"t": 19.1861, "hora": "16:16:05", "dir": "rx", "hex": "05 98 06 00 30 64 c5 a2"}
+{"t": 19.1867, "hora": "16:16:05", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 19.187, "hora": "16:16:05", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 19.2448, "hora": "16:16:05", "dir": "rx", "hex": "80 06 7f 13 07 00 00 00 79 16"}
+{"t": 19.2456, "hora": "16:16:05", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 13 07 00 00 00); reconectando"}
+{"t": 19.2458, "hora": "16:16:05", "dir": "nota", "texto": "fechado"}
+{"t": 27.8899, "hora": "16:16:14", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 27.8906, "hora": "16:16:14", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 28.0718, "hora": "16:16:14", "dir": "rx", "hex": "80 05 98 06 00 30 64 c5 a2"}
+{"t": 28.0722, "hora": "16:16:14", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 28.0728, "hora": "16:16:14", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 28.1318, "hora": "16:16:14", "dir": "rx", "hex": "80 06 7f 13 07 00 00 00 79 16"}
+{"t": 28.1322, "hora": "16:16:14", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 13 07 00 00 00); reconectando"}
+{"t": 28.1324, "hora": "16:16:14", "dir": "nota", "texto": "fechado"}
+{"t": 36.7838, "hora": "16:16:23", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 36.7843, "hora": "16:16:23", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 36.9709, "hora": "16:16:23", "dir": "rx", "hex": "80 05 98 06 00 30 64 c5 a2"}
+{"t": 36.9715, "hora": "16:16:23", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 36.9718, "hora": "16:16:23", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 37.0299, "hora": "16:16:23", "dir": "rx", "hex": "80 06"}
+{"t": 37.032, "hora": "16:16:23", "dir": "rx", "hex": "7f 13 07 00 00 00 79 16"}
+{"t": 37.0325, "hora": "16:16:23", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 13 07 00 00 00); reconectando"}
+{"t": 37.0328, "hora": "16:16:23", "dir": "nota", "texto": "fechado"}
+{"t": 45.7051, "hora": "16:16:31", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 45.7057, "hora": "16:16:31", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 45.9169, "hora": "16:16:32", "dir": "rx", "hex": "80"}
+{"t": 45.9329, "hora": "16:16:32", "dir": "rx", "hex": "05 98 06 00 30 64 c5 a2"}
+{"t": 45.9333, "hora": "16:16:32", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 45.9336, "hora": "16:16:32", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 45.9928, "hora": "16:16:32", "dir": "rx", "hex": "80 06 7f 13 07 00 00 00 79 16"}
+{"t": 45.9933, "hora": "16:16:32", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 13 07 00 00 00); reconectando"}
+{"t": 45.9936, "hora": "16:16:32", "dir": "nota", "texto": "fechado"}
+{"t": 54.635, "hora": "16:16:40", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 54.6354, "hora": "16:16:40", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 54.7769, "hora": "16:16:41", "dir": "rx", "hex": "80 05 98 06 00 30 64 c5 a2"}
+{"t": 54.7774, "hora": "16:16:41", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 54.7779, "hora": "16:16:41", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 54.8138, "hora": "16:16:41", "dir": "rx", "hex": "80 06 7f 13 07 00 00 00 79 16"}
+{"t": 54.8143, "hora": "16:16:41", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 13 07 00 00 00); reconectando"}
+{"t": 54.8145, "hora": "16:16:41", "dir": "nota", "texto": "fechado"}
+{"t": 63.4488, "hora": "16:16:49", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 63.4492, "hora": "16:16:49", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 63.5868, "hora": "16:16:49", "dir": "rx", "hex": "80"}
+{"t": 63.5954, "hora": "16:16:49", "dir": "rx", "hex": "05 98 06 00 30 64 c5 a2"}
+{"t": 63.5961, "hora": "16:16:49", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 63.5965, "hora": "16:16:49", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 63.63, "hora": "16:16:49", "dir": "rx", "hex": "80 06 7f 13"}
+{"t": 63.6379, "hora": "16:16:49", "dir": "rx", "hex": "07 00 00 00 79 16"}
+{"t": 63.6383, "hora": "16:16:49", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 13 07 00 00 00); reconectando"}
+{"t": 63.6384, "hora": "16:16:49", "dir": "nota", "texto": "fechado"}
+{"t": 72.2819, "hora": "16:16:58", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 72.2824, "hora": "16:16:58", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 72.4469, "hora": "16:16:58", "dir": "rx", "hex": "80"}
+{"t": 72.4531, "hora": "16:16:58", "dir": "rx", "hex": "05 98 06 00 30 64 c5 a2"}
+{"t": 72.4537, "hora": "16:16:58", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 72.454, "hora": "16:16:58", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 72.4849, "hora": "16:16:58", "dir": "rx", "hex": "80 06 7f 13 07 00 00 00"}
+{"t": 72.4967, "hora": "16:16:58", "dir": "rx", "hex": "79 16"}
+{"t": 72.4976, "hora": "16:16:58", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 13 07 00 00 00); reconectando"}
+{"t": 72.4979, "hora": "16:16:58", "dir": "nota", "texto": "fechado"}
+{"t": 81.1462, "hora": "16:17:07", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 81.1466, "hora": "16:17:07", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 81.3101, "hora": "16:17:07", "dir": "rx", "hex": "80"}
+{"t": 81.3138, "hora": "16:17:07", "dir": "rx", "hex": "05 98 06 00 30 64 c5 a2"}
+{"t": 81.3143, "hora": "16:17:07", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 81.3147, "hora": "16:17:07", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 81.3729, "hora": "16:17:07", "dir": "rx", "hex": "80 06 7f 13 07 00 00 00 79 16"}
+{"t": 81.3737, "hora": "16:17:07", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 13 07 00 00 00); reconectando"}
+{"t": 81.3739, "hora": "16:17:07", "dir": "nota", "texto": "fechado"}

@@ -1,0 +1,241 @@
+{
+ "formato": 1,
+ "nota": "Catálogo dos tipos de widget (docs/LAYOUT.md): tamanhos aceitos e opções. Fonte única para a validação no Python, na web e no app.",
+ "tipos": {
+  "numero": {
+   "nome": "Número",
+   "minimo": [
+    1,
+    1
+   ],
+   "maximo": [
+    6,
+    4
+   ],
+   "metricas": [
+    "numerica",
+    "discreta"
+   ],
+   "opcoes": {
+    "decimais": {
+     "tipo": "inteiro",
+     "min": 0,
+     "max": 4
+    },
+    "mostrar_unidade": {
+     "tipo": "bool",
+     "padrao": true
+    },
+    "mostrar_estado": {
+     "tipo": "bool",
+     "padrao": true
+    }
+   }
+  },
+  "numero_historico": {
+   "nome": "Número com gráfico",
+   "minimo": [
+    2,
+    2
+   ],
+   "maximo": [
+    12,
+    6
+   ],
+   "metricas": [
+    "numerica"
+   ],
+   "opcoes": {
+    "segundos": {
+     "tipo": "inteiro",
+     "min": 10,
+     "max": 600,
+     "padrao": 60
+    },
+    "mostrar_faixa": {
+     "tipo": "bool",
+     "padrao": true
+    }
+   }
+  },
+  "mostrador": {
+   "nome": "Mostrador",
+   "minimo": [
+    2,
+    2
+   ],
+   "maximo": [
+    12,
+    12
+   ],
+   "metricas": [
+    "numerica"
+   ],
+   "opcoes": {
+    "escala": {
+     "tipo": "objeto",
+     "campos": {
+      "min": {
+       "tipo": "numero"
+      },
+      "max": {
+       "tipo": "numero"
+      },
+      "maior": {
+       "tipo": "numero",
+       "min_exclusivo": 0
+      },
+      "menor": {
+       "tipo": "inteiro",
+       "min": 1,
+       "max": 20,
+       "padrao": 10
+      },
+      "divisor_rotulo": {
+       "tipo": "numero",
+       "min_exclusivo": 0,
+       "padrao": 1
+      },
+      "alerta": {
+       "tipo": "numero"
+      }
+     }
+    },
+    "centro": {
+     "tipo": "objeto",
+     "campos": {
+      "conteudo": {
+       "tipo": "lista",
+       "valores": [
+        "nada",
+        "digital",
+        "rolos",
+        "metrica"
+       ],
+       "padrao": "digital"
+      },
+      "metrica": {
+       "tipo": "metrica"
+      }
+     }
+    },
+    "arco_inferior": {
+     "tipo": "objeto",
+     "campos": {
+      "metrica": {
+       "tipo": "metrica",
+       "obrigatorio": true
+      },
+      "min": {
+       "tipo": "numero",
+       "obrigatorio": true
+      },
+      "max": {
+       "tipo": "numero",
+       "obrigatorio": true
+      }
+     }
+    }
+   }
+  },
+  "barra": {
+   "nome": "Barra",
+   "minimo": [
+    1,
+    1
+   ],
+   "maximo": [
+    12,
+    12
+   ],
+   "metricas": [
+    "numerica"
+   ],
+   "opcoes": {
+    "orientacao": {
+     "tipo": "lista",
+     "valores": [
+      "horizontal",
+      "vertical"
+     ],
+     "padrao": "horizontal"
+    },
+    "min": {
+     "tipo": "numero"
+    },
+    "max": {
+     "tipo": "numero"
+    },
+    "mostrar_valor": {
+     "tipo": "bool",
+     "padrao": true
+    }
+   }
+  },
+  "estado": {
+   "nome": "Estado",
+   "minimo": [
+    1,
+    1
+   ],
+   "maximo": [
+    6,
+    3
+   ],
+   "metricas": [
+    "numerica",
+    "discreta"
+   ],
+   "opcoes": {}
+  },
+  "luz": {
+   "nome": "Luz",
+   "minimo": [
+    1,
+    1
+   ],
+   "maximo": [
+    4,
+    4
+   ],
+   "metricas": [
+    "bit"
+   ],
+   "sem_metrica_se": {
+    "fonte": "falhas"
+   },
+   "opcoes": {
+    "fonte": {
+     "tipo": "lista",
+     "valores": [
+      "metrica",
+      "falhas"
+     ],
+     "padrao": "metrica"
+    },
+    "rotulo": {
+     "tipo": "texto",
+     "max": 20
+    }
+   }
+  },
+  "falhas": {
+   "nome": "Falhas",
+   "minimo": [
+    2,
+    1
+   ],
+   "maximo": [
+    12,
+    6
+   ],
+   "metricas": [],
+   "opcoes": {
+    "mostrar_codigos": {
+     "tipo": "bool",
+     "padrao": true
+    }
+   }
+  }
+ }
+}

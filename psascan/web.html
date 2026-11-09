@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>psascan</title>
+<link rel="stylesheet" href="/api/tema.css">
+<script>if(matchMedia("(prefers-color-scheme: light)").matches)document.documentElement.dataset.theme="light"</script>
+<style>
+/* cores e fontes: variáveis do tema ativo (docs/TEMA.md), no modo escuro ou claro do sistema */
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--ui)}
+header{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+h1{font-size:18px;margin:0}.mut{color:var(--muted);font-size:13px}
+main{max-width:980px;margin:0 auto;padding:16px;display:grid;gap:16px}
+section{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+h2{font-size:15px;margin:0 0 10px}
+button{font:inherit;padding:7px 14px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+button.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}button.perigo{border-color:var(--bad);color:var(--bad-ink)}
+button:disabled{opacity:.5;cursor:default}
+.linha{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+td.v{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+code,pre{font-family:var(--mono);font-size:12.5px}
+pre{background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:8px;max-height:220px;overflow:auto;margin:0;white-space:pre-wrap;word-break:break-all}
+dialog{border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);max-width:min(640px,92vw)}
+dialog li{margin:6px 0}.erro{color:var(--bad-ink)}.presente{color:var(--bad-ink);font-weight:600}
+canvas{width:100%;height:180px;display:block;border:1px solid var(--line);border-radius:7px;background:var(--bg)}
+.chip{display:inline-block;padding:2px 10px;border-radius:99px;font-size:13px;border:1px solid var(--line)}
+.chip.ok{color:var(--ok-ink);border-color:var(--ok)}.chip.mal{color:var(--bad-ink);border-color:var(--bad)}
+.diag{font-size:18px;font-weight:700;margin:10px 0 2px}
+select{font:inherit;padding:6px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink);max-width:100%}
+</style>
+</head>
+<body>
+<header><h1 id="titulo">psascan</h1><span class="chip" id="con">desconectado</span><span class="mut" id="sub"></span></header>
+<main>
+  <section>
+    <h2>Sonda lambda e parâmetros ao vivo</h2>
+    <div class="linha"><button class="pri" id="rapido">Lambda (rápido)</button><button id="completo">Todos os parâmetros</button>
+      <button id="parar" disabled>Parar</button><span class="mut" id="vivoinfo"></span></div>
+    <div class="diag" id="diag"></div><div class="mut" id="diagnum"></div>
+    <canvas id="graf" width="900" height="180" style="margin-top:8px"></canvas>
+    <div class="mut" style="font-size:12px">últimos 60 s · 0 a 1000 mV · linha tracejada = 450 mV</div>
+    <details style="margin-top:8px"><summary class="mut">Como interpretar</summary><pre id="dicas"></pre></details>
+    <table id="params" style="margin-top:10px"></table>
+  </section>
+  <section>
+    <h2>Códigos de falha</h2>
+    <div class="linha"><button class="pri" data-acao="falhas">Ler falhas</button>
+      <button class="perigo" data-acao="apagar" id="btn-apagar">Apagar falhas</button></div>
+    <div id="falhas" style="margin-top:10px"></div>
+  </section>
+  <section>
+    <h2>Escrita</h2>
+    <label class="linha"><input type="checkbox" id="escrita"> Permitir comandos de escrita (apagar falhas e atuadores; desligado a cada início)</label>
+    <h2 style="margin-top:12px">Atuadores</h2>
+    <div class="linha"><select id="atu"></select><button class="perigo" data-acao="atuador">Acionar</button></div>
+    <p class="mut">Só com o motor desligado e ignição ligada. Cada acionamento dura poucos segundos.</p>
+    <div id="atures"></div>
+  </section>
+  <section>
+    <h2>Comunicação</h2>
+    <div class="linha"><button data-acao="versao">Versão do scanner</button><button id="desc">Desconectar</button></div>
+    <pre id="log" style="margin-top:10px"></pre>
+  </section>
+</main>
+<dialog id="dlg"><h2 id="dlgt">Confirmar envio</h2><p class="mut">Estes quadros serão enviados pela serial:</p>
+  <ol id="dlgl"></ol><div class="linha"><button class="pri" id="sim">Enviar</button><button id="nao">Cancelar</button></div></dialog>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function api(path,body){const r=await fetch(path,body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const j=await r.json();if(j.erro)throw new Error(j.erro);return j.ok??j}
+function confirmar(acao,n,titulo){return new Promise(async res=>{
+  let q;try{q=await api('/api/previa?acao='+acao+(n!=null?'&n='+n:''))}catch(e){alert(e.message);return res(false)}
+  $('#dlgt').textContent=titulo;$('#dlgl').innerHTML=q.map(x=>`<li>${esc(x.desc)}<br><code>${esc(x.bytes)}</code></li>`).join('');
+  $('#sim').onclick=()=>{$('#dlg').close();res(true)};$('#nao').onclick=()=>{$('#dlg').close();res(false)};$('#dlg').showModal()})}
+async function log(){try{$('#log').textContent=(await api('/api/log')).join('\n');$('#log').scrollTop=1e9}catch(e){}}
+function erro(el,e){el.innerHTML=`<p class="erro">${esc(e.message)}</p>`;log()}
+
+const acoes={
+  async falhas(){const r=await api('/api/falhas',{});const el=$('#falhas');
+    if(r.falhas===null){el.innerHTML=`<p class="erro">Central sem resposta válida: <code>${esc(r.bruto)}</code></p>`;return}
+    el.innerHTML=r.falhas.length?`<table><tr><th>Código</th><th>Componente</th><th>Tipo</th><th>Estado</th></tr>`+
+      r.falhas.map(f=>`<tr><td><code>${f.codigo.toString(16).toUpperCase().padStart(3,'0')}</code></td><td>${esc(f.nome)}${f.pendente?' (nome provável)':''}</td><td>${esc(f.tipo_nome)}</td>
+      <td class="${f.presente?'presente':''}">${f.presente?'presente':'memorizada'}</td></tr>`).join('')+'</table>':'<p>Nenhum código de falha.</p>'},
+  async apagar(){const r=await api('/api/apagar',{});$('#falhas').innerHTML=`<p>Comando enviado (resposta <code>${esc(r.resposta)}</code>). Leia de novo para conferir.</p>`},
+  async atuador(id,frase){const r=await api('/api/atuador',{id,frase});$('#atures').innerHTML=`<p>Resposta: <code>${esc(r.resposta)}</code></p>`},
+  async versao(){const r=await api('/api/versao',{});$('#log').textContent+=`\nversão: ${JSON.stringify(r)}`},
+};
+let atuadores=[];
+const titulos={falhas:'Ler códigos de falha',apagar:'APAGAR códigos de falha',atuador:'Acionar atuador',versao:'Versão do scanner'};
+document.querySelectorAll('[data-acao]').forEach(b=>b.onclick=async()=>{
+  const a=b.dataset.acao,n=a==='atuador'?$('#atu').value:null;
+  if(!await confirmar(a==='atuador'?n:a,null,titulos[a]))return;
+  let frase;   // modo de segurança: bomba/injetores pedem para digitar PERIGO
+  if(a==='atuador'&&atuadores.find(x=>x.id===n).perigoso){frase=prompt('MODO DE SEGURANÇA\n'+$('#atu').selectedOptions[0].text+'\nO teste não para sozinho (pode ser preciso desligar a chave) e com motor parado pode encharcar os cilindros.\nDigite PERIGO para confirmar:');
+    if(frase!=='PERIGO'){$('#atures').innerHTML='<p>Cancelado (modo de segurança).</p>';return}}
+  b.disabled=true;try{await acoes[a](n==null?undefined:n,frase)}catch(e){erro(a==='atuador'?$('#atures'):$('#falhas'),e)}finally{b.disabled=false;log()}});
+
+async function iniciar(modo){
+  const t={rapido:'Lambda ao vivo (só bloco 0: lambda, RPM, temperaturas, MAP, borboleta)',completo:'Todos os parâmetros ao vivo'}[modo];
+  if(!await confirmar(modo,null,t+' — repete até Parar; reconecta sozinho se cair'))return;
+  try{await api('/api/'+modo,{})}catch(e){erro($('#vivoinfo'),e)}}
+$('#rapido').onclick=()=>iniciar('rapido');$('#completo').onclick=()=>iniciar('completo');
+$('#parar').onclick=async()=>{const r=await api('/api/parar',{});$('#vivoinfo').textContent='registro salvo em '+(r.csv||'');log()};
+$('#desc').onclick=async()=>{await api('/api/desconectar',{});log()};
+
+function cor(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
+function grafico(serie){const c=$('#graf'),g=c.getContext('2d'),W=c.width=c.clientWidth*devicePixelRatio,H=c.height=c.clientHeight*devicePixelRatio;
+  g.clearRect(0,0,W,H);const x=t=>W*(1+t/60),y=v=>H*(1-v/1000);
+  g.strokeStyle=cor('--muted');g.setLineDash([6,6]);g.beginPath();g.moveTo(0,y(450));g.lineTo(W,y(450));g.stroke();g.setLineDash([]);
+  g.strokeStyle=cor('--accent');g.lineWidth=2*devicePixelRatio;g.beginPath();
+  serie.forEach(([t,v],k)=>(k&&t-serie[k-1][0]<1)?g.lineTo(x(t),y(v)):g.moveTo(x(t),y(v)));g.stroke()}  // quebra a linha nas quedas
+
+async function atualizar(){
+  try{const e=await api('/api/estado');
+    const ch=$('#con');ch.textContent=e.conexao+(e.reconexoes?` · ${e.reconexoes} reconexões`:'');
+    ch.className='chip '+(e.conexao==='conectado'?'ok':e.conexao==='desconectado'?'':'mal');
+    $('#parar').disabled=!e.rodando;$('#rapido').disabled=$('#completo').disabled=!!e.rodando;
+    if(e.rodando||e.leituras){
+      $('#vivoinfo').textContent=`${e.rodando?'gravando':'parado'} · ${e.leituras} leituras · ${e.taxa_hz}/s`+(e.csv?' · '+e.csv.split('/').pop():'')+
+        (e.conexao!=='conectado'&&e.ultimo_erro?' · '+e.ultimo_erro:'');
+      const a=e.lambda.analise;$('#diag').textContent=a.diagnostico;
+      $('#diagnum').textContent=a.min!=null?`últimos ${a.segundos} s: mín ${a.min} · máx ${a.max} · média ${a.media} mV · ${a.trocas} trocas rico↔pobre · ${a.pct_rico}% do tempo rico`:'';
+      grafico(e.lambda.serie);
+      $('#params').innerHTML=e.valores.map(p=>`<tr><td>${esc(p.nome)}</td><td class="v">${esc(p.valor)}</td><td class="mut">${esc(p.obs)}</td></tr>`).join('')}
+  }catch(err){$('#con').textContent='servidor fora do ar';$('#con').className='chip mal'}
+  setTimeout(atualizar,e_rodando()?300:1500)}
+function e_rodando(){return !$('#parar').disabled}
+
+(async()=>{const i=await api('/api/info');$('#titulo').textContent='psascan · '+i.nome;$('#sub').textContent='porta '+i.porta+(i.captura?' · captura '+i.captura.split('/').pop():'');
+  atuadores=i.atuadores;
+  $('#atu').innerHTML=atuadores.map(a=>`<option value="${esc(a.id)}">${esc(a.nome)}${a.perigoso?' ⚠ bloqueado':''}</option>`).join('');
+  $('#escrita').checked=!!i.escrita;
+  $('#escrita').onchange=async e=>{try{await api('/api/escrita',{ativa:e.target.checked})}catch(x){e.target.checked=!e.target.checked;alert(x.message)}};$('#dicas').textContent=i.dicas_lambda;log();atualizar()})();
+</script>
+</body>
+</html>

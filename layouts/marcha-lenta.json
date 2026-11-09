@@ -1,0 +1,106 @@
+{
+ "formato": 1,
+ "id": "marcha-lenta",
+ "nome": "Marcha lenta",
+ "descricao": "Rotação, motor de passo, avanço e vácuo com o motor quente parado.",
+ "grade": {
+  "colunas": 12,
+  "linhas": 6
+ },
+ "orientacao": "paisagem",
+ "widgets": [
+  {
+   "id": "rpm",
+   "tipo": "mostrador",
+   "metrica": "rpm",
+   "x": 0,
+   "y": 0,
+   "largura": 4,
+   "altura": 4,
+   "opcoes": {
+    "escala": {
+     "min": 0,
+     "max": 2000,
+     "maior": 200,
+     "divisor_rotulo": 1,
+     "alerta": 1500
+    },
+    "centro": {
+     "conteudo": "digital"
+    }
+   }
+  },
+  {
+   "id": "lambda",
+   "tipo": "estado",
+   "metrica": "lambda",
+   "x": 0,
+   "y": 4,
+   "largura": 4,
+   "altura": 2
+  },
+  {
+   "id": "passo",
+   "tipo": "numero_historico",
+   "metrica": "motor_passo",
+   "x": 4,
+   "y": 0,
+   "largura": 4,
+   "altura": 3
+  },
+  {
+   "id": "avanco",
+   "tipo": "numero_historico",
+   "metrica": "avanco",
+   "x": 8,
+   "y": 0,
+   "largura": 4,
+   "altura": 3
+  },
+  {
+   "id": "map",
+   "tipo": "numero",
+   "metrica": "map",
+   "x": 4,
+   "y": 3,
+   "largura": 2,
+   "altura": 3,
+   "opcoes": {
+    "mostrar_estado": true
+   }
+  },
+  {
+   "id": "borboleta",
+   "tipo": "numero",
+   "metrica": "borboleta",
+   "x": 6,
+   "y": 3,
+   "largura": 2,
+   "altura": 3,
+   "opcoes": {
+    "mostrar_estado": true
+   }
+  },
+  {
+   "id": "pedal",
+   "tipo": "estado",
+   "metrica": "pedal",
+   "x": 8,
+   "y": 3,
+   "largura": 2,
+   "altura": 3
+  },
+  {
+   "id": "bat",
+   "tipo": "numero",
+   "metrica": "bateria",
+   "x": 10,
+   "y": 3,
+   "largura": 2,
+   "altura": 3,
+   "opcoes": {
+    "mostrar_estado": true
+   }
+  }
+ ]
+}

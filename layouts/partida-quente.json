@@ -1,0 +1,85 @@
+{
+ "formato": 1,
+ "id": "partida-quente",
+ "nome": "Partida a quente",
+ "descricao": "Para investigar partida difícil com o motor quente: temperaturas, rotação na partida e bateria.",
+ "grade": {
+  "colunas": 12,
+  "linhas": 6
+ },
+ "orientacao": "paisagem",
+ "widgets": [
+  {
+   "id": "agua",
+   "tipo": "mostrador",
+   "metrica": "agua",
+   "x": 0,
+   "y": 0,
+   "largura": 4,
+   "altura": 4,
+   "opcoes": {
+    "escala": {
+     "min": 40,
+     "max": 130,
+     "maior": 10,
+     "menor": 5,
+     "alerta": 110
+    },
+    "centro": {
+     "conteudo": "digital"
+    }
+   }
+  },
+  {
+   "id": "bat",
+   "tipo": "numero",
+   "metrica": "bateria",
+   "x": 0,
+   "y": 4,
+   "largura": 2,
+   "altura": 2,
+   "opcoes": {
+    "mostrar_estado": true
+   }
+  },
+  {
+   "id": "luz",
+   "tipo": "luz",
+   "metrica": "luz_injecao",
+   "x": 2,
+   "y": 4,
+   "largura": 2,
+   "altura": 2
+  },
+  {
+   "id": "ar",
+   "tipo": "numero_historico",
+   "metrica": "ar",
+   "x": 4,
+   "y": 0,
+   "largura": 4,
+   "altura": 3
+  },
+  {
+   "id": "passo",
+   "tipo": "numero_historico",
+   "metrica": "motor_passo",
+   "x": 8,
+   "y": 0,
+   "largura": 4,
+   "altura": 3
+  },
+  {
+   "id": "rpm",
+   "tipo": "numero_historico",
+   "metrica": "rpm",
+   "x": 4,
+   "y": 3,
+   "largura": 8,
+   "altura": 3,
+   "opcoes": {
+    "segundos": 30
+   }
+  }
+ ]
+}

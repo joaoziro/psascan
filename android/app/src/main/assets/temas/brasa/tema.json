@@ -1,0 +1,57 @@
+{
+ "formato": 1,
+ "id": "brasa",
+ "nome": "Brasa",
+ "descricao": "Mostrador grafite com chamas abstratas subindo pelo fundo, agulha branca com ponta vermelha e miolo de metal escovado. Exemplo de pele com arte de fundo.",
+ "autor": "psascan",
+ "interface": {
+  "escuro": {
+   "accent": "#ff6a2a",
+   "accent-ink": "#1a0700",
+   "accent-soft": "#ff6a2a24"
+  },
+  "claro": {
+   "accent": "#c2410c",
+   "accent-ink": "#ffffff",
+   "accent-soft": "#c2410c1f"
+  }
+ },
+ "painel": {
+  "cores": {
+   "passou": "#ff8a3d",
+   "ambar": "#ffb03a",
+   "texto": "#f4f1ec"
+  },
+  "escala": {
+   "niveis": 2,
+   "pintar_passou": true,
+   "numeros_por_cima": false
+  },
+  "peles": {
+   "mostrador": {
+    "imagens": {
+     "fundo": "arquivos/fundo.webp",
+     "agulha": {
+      "arquivo": "arquivos/agulha.webp",
+      "pivo": [
+       0.5,
+       0.88
+      ],
+      "comprimento": 0.5
+     },
+     "miolo": "arquivos/miolo.webp"
+    },
+    "desenhar": {
+     "aro": true,
+     "escala": true,
+     "numeros": true
+    }
+   },
+   "numero_historico": {
+    "linha": 2,
+    "preencher": true
+   }
+  }
+ },
+ "mascote": null
+}

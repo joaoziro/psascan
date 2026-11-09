@@ -1,0 +1,89 @@
+{
+ "formato": 1,
+ "id": "vela",
+ "nome": "Vela",
+ "descricao": "Tema claro: mostrador cor de porcelana, aro de aço escovado e agulha azul-elétrico, como a faísca de uma vela de ignição. Bom para usar de dia.",
+ "autor": "psascan",
+ "interface": {
+  "escuro": {
+   "accent": "#4f8cff",
+   "accent-ink": "#05122b",
+   "accent-soft": "#4f8cff24"
+  },
+  "claro": {
+   "accent": "#1f5fd6",
+   "accent-ink": "#ffffff",
+   "accent-soft": "#1f5fd61f"
+  }
+ },
+ "painel": {
+  "cores": {
+   "fundo": "#e4e0d6",
+   "texto": "#16181c",
+   "texto_medio": "#3a3d44",
+   "texto_fino": "#6b6f78",
+   "texto_apagado": "#8a8f99",
+   "passou": "#1f5fd6",
+   "ambar": "#e0a100",
+   "alerta": "#d23a2f",
+   "ok": "#1f9d55",
+   "aro": [
+    "#e6e8eb",
+    "#9aa0a8",
+    "#c9cdd2"
+   ],
+   "aro_interno": "#5b6068",
+   "face": [
+    "#f6f3ec",
+    "#ece7dc",
+    "#dcd5c6"
+   ],
+   "ponteiro": [
+    "#7fb0ff",
+    "#2f6fe4",
+    "#1d4fb0",
+    "#123a85"
+   ],
+   "ponteiro_aresta": "#d8e7ff",
+   "ponteiro_brilho": "#4f8cff",
+   "sombra": "#00000055",
+   "contorno_numeros": "#f3efe6",
+   "miolo": [
+    "#f3efe6",
+    "#ddd6c7"
+   ],
+   "chanfro": [
+    "#ffffff",
+    "#b9b2a3",
+    "#8a8476"
+   ],
+   "rolo_fundo": "#f3efe6",
+   "rolo_borda": "#9aa0a8",
+   "rolo_texto": "#16181c",
+   "rolo_destaque_fundo": "#1f5fd6",
+   "rolo_destaque_borda": "#123a85",
+   "rolo_destaque_texto": "#ffffff",
+   "agua_trilho": "#d6d0c2",
+   "luz_apagada": "#c9c3b5",
+   "rotulo_fundo": "#d3cdbf",
+   "superficie": "#f3f0e8",
+   "superficie_2": "#ebe7dd",
+   "borda": "#cfc9bb",
+   "campo": "#f8f6f1",
+   "grafico_grade": "#dcd6c9",
+   "grafico_limite": "#9a9384",
+   "chave_ligada_trilho": "#bcd0f7"
+  },
+  "ponteiro": {
+   "estilo": "agulha",
+   "brilho": 0.25,
+   "sombra": 0.45
+  },
+  "escala": {
+   "niveis": 3,
+   "pintar_passou": true,
+   "numeros_por_cima": true
+  }
+ },
+ "mascote": null
+}

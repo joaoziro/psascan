@@ -1,0 +1,1121 @@
+{
+ "formato": 1,
+ "id": "sagem-sl96",
+ "nome": "Sagem SL96",
+ "compatibilidade": [
+  "Peugeot 306 1.8 16v (motor XU7JP4) — testado"
+ ],
+ "scanner": "psa-com",
+ "familia": "psa5",
+ "documentacao": "docs/PROTOCOLO-SL96.md",
+ "conexao": {
+  "pino": "13 07 03 00",
+  "destravar": "28 04 25 1D 48 FF",
+  "linha": "07 00 04 00 00 00 68 3C 0B 05",
+  "inicio": "0F",
+  "inicio_tentativas": 3,
+  "acordar": "07 31 84 10 00 00 00 3C 6E 01",
+  "acordar_timeout_s": 6.0,
+  "manter": "00",
+  "manter_apos_s": 1.0,
+  "descricao": "linha K no pino 7, 10400 baud; init 5 baud no endereço 10 se a central não responder"
+ },
+ "leitura": {
+  "blocos": [
+   {
+    "id": 0,
+    "pedido": "11 00"
+   },
+   {
+    "id": 1,
+    "pedido": "11 01"
+   }
+  ],
+  "falhas": {
+   "pedido": "33",
+   "decodificacao": "psa5-pares",
+   "sem_resposta": "32"
+  }
+ },
+ "metricas": [
+  {
+   "id": "rpm",
+   "ordem": 1,
+   "curto": "RPM",
+   "nome": "Rotação do motor",
+   "unidade": "rpm",
+   "bloco": 0,
+   "byte": 4,
+   "tipo": "u8",
+   "fator": 32,
+   "offset": 0,
+   "decimais": 0,
+   "escala": [
+    0,
+    6000
+   ],
+   "faixas": [
+    {
+     "quando": "marcha_lenta_quente",
+     "normal": [
+      800,
+      900
+     ],
+     "atencao": [
+      720,
+      1000
+     ],
+     "nota": "referência: entre 800 e 900 em marcha lenta"
+    },
+    {
+     "quando": "sempre",
+     "normal": [
+      0,
+      5800
+     ],
+     "atencao": [
+      0,
+      6300
+     ],
+     "acima": "perto do corte"
+    }
+   ],
+   "nivel": "V2",
+   "evidencia": "768–864 em marcha lenta; 0 parado"
+  },
+  {
+   "id": "bateria",
+   "ordem": 2,
+   "curto": "Bateria",
+   "nome": "Tensão da bateria",
+   "unidade": "V",
+   "bloco": 0,
+   "byte": 14,
+   "tipo": "u8",
+   "fator": 0.073,
+   "offset": 0,
+   "decimais": 1,
+   "escala": [
+    0,
+    16
+   ],
+   "faixas": [
+    {
+     "quando": "ligado",
+     "normal": [
+      13.2,
+      14.6
+     ],
+     "atencao": [
+      12.8,
+      15.0
+     ],
+     "abaixo": "alternador não está carregando",
+     "acima": "sobrecarga (regulador)",
+     "nota": "referência: 12,5 a 14,5 V"
+    },
+    {
+     "quando": "desligado",
+     "normal": [
+      12.2,
+      13.2
+     ],
+     "atencao": [
+      11.5,
+      13.6
+     ],
+     "abaixo": "bateria fraca"
+    }
+   ],
+   "nivel": "V2",
+   "evidencia": "11,7 V parado; 13,7–14,2 V ligado"
+  },
+  {
+   "id": "avanco",
+   "ordem": 3,
+   "curto": "Avanço",
+   "nome": "Avanço de ignição",
+   "unidade": "°",
+   "bloco": 1,
+   "byte": 11,
+   "tipo": "u8",
+   "fator": 0.375,
+   "offset": -36.0,
+   "decimais": 0,
+   "escala": [
+    -10,
+    60
+   ],
+   "faixas": [
+    {
+     "quando": "marcha_lenta_quente",
+     "normal": [
+      8,
+      16
+     ],
+     "atencao": [
+      4,
+      20
+     ],
+     "nota": "referência: 9° a 12°; a central mexe no avanço para segurar a marcha lenta (carro: 8–16°)"
+    }
+   ],
+   "nivel": "V2",
+   "evidencia": "8–29° em marcha lenta"
+  },
+  {
+   "id": "carga",
+   "ordem": 4,
+   "curto": "Carga",
+   "nome": "Carga do motor",
+   "unidade": "%",
+   "bloco": 0,
+   "byte": 2,
+   "tipo": "u16",
+   "fator": 0.00851,
+   "offset": 0,
+   "decimais": 0,
+   "escala": [
+    0,
+    100
+   ],
+   "faixas": [
+    {
+     "quando": "marcha_lenta_quente",
+     "normal": [
+      18,
+      32
+     ],
+     "atencao": [
+      12,
+      40
+     ],
+     "nota": "referência: 20 a 25 %; carro: 27–28 %"
+    }
+   ],
+   "nivel": "V2",
+   "evidencia": "25–27 % em marcha lenta"
+  },
+  {
+   "id": "pedal",
+   "ordem": 5,
+   "curto": "Pedal",
+   "nome": "Estado da borboleta (pedal)",
+   "unidade": "",
+   "bloco": 0,
+   "byte": 7,
+   "tipo": "enum",
+   "valores": {
+    "16": "marcha lenta",
+    "0": "parcial",
+    "64": "plena carga"
+   },
+   "valores_pendentes": [
+    "0",
+    "64"
+   ],
+   "nivel": "V1",
+   "evidencia": "só 16 (marcha lenta) observado"
+  },
+  {
+   "id": "borboleta",
+   "ordem": 6,
+   "curto": "Borboleta",
+   "nome": "Abertura da borboleta",
+   "unidade": "°",
+   "bloco": 0,
+   "byte": 18,
+   "tipo": "u8",
+   "fator": 0.39,
+   "offset": 0,
+   "decimais": 0,
+   "escala": [
+    0,
+    100
+   ],
+   "obs": "A central marca 16° em repouso no carro; a referência diz 11–12°.",
+   "faixas": [
+    {
+     "quando": "pedal_solto",
+     "normal": [
+      11,
+      12
+     ],
+     "atencao": [
+      9,
+      17
+     ],
+     "nota": "referência: 11° a 12° em repouso"
+    }
+   ],
+   "nivel": "V1",
+   "evidencia": "16° em repouso contra 11–12° esperados: fator suspeito"
+  },
+  {
+   "id": "map",
+   "ordem": 7,
+   "curto": "MAP",
+   "nome": "Pressão de admissão (MAP)",
+   "unidade": "mbar",
+   "bloco": 0,
+   "byte": 8,
+   "tipo": "u16",
+   "fator": 0.02994,
+   "offset": 0,
+   "decimais": 0,
+   "escala": [
+    0,
+    1100
+   ],
+   "faixas": [
+    {
+     "quando": "marcha_lenta_quente",
+     "normal": [
+      350,
+      460
+     ],
+     "atencao": [
+      300,
+      520
+     ],
+     "acima": "vácuo fraco (entrada de ar, válvulas)",
+     "nota": "referência: 350 a 450 mbar em marcha lenta"
+    }
+   ],
+   "nivel": "V2",
+   "evidencia": "864–880 parado; 425–454 em marcha lenta"
+  },
+  {
+   "id": "pressao_atm",
+   "ordem": 8,
+   "curto": "Pressão atm.",
+   "nome": "Pressão atmosférica",
+   "unidade": "mbar",
+   "bloco": 0,
+   "byte": 10,
+   "tipo": "u16",
+   "fator": 0.02994,
+   "offset": 0,
+   "decimais": 0,
+   "escala": [
+    0,
+    1100
+   ],
+   "obs": "Depende da altitude: ~1013 mbar no nível do mar; o carro marcou 887 mbar.",
+   "faixas": [
+    {
+     "quando": "sempre",
+     "normal": [
+      800,
+      1050
+     ],
+     "atencao": [
+      700,
+      1080
+     ],
+     "nota": "referência: 950 a 1050 mbar; menos em altitude"
+    }
+   ],
+   "nivel": "V2",
+   "evidencia": "887 constante"
+  },
+  {
+   "id": "agua",
+   "ordem": 9,
+   "curto": "Água",
+   "nome": "Temperatura da água",
+   "unidade": "°C",
+   "bloco": 0,
+   "byte": 12,
+   "tipo": "curva",
+   "escala": [
+    -40,
+    160
+   ],
+   "curva": "temperatura",
+   "faixas": [
+    {
+     "quando": "ligado",
+     "normal": [
+      80,
+      102
+     ],
+     "atencao": [
+      -40,
+      108
+     ],
+     "abaixo": "ainda frio",
+     "acima": "superaquecendo",
+     "nota": "referência: ~90 °C com o motor quente"
+    }
+   ],
+   "nivel": "V2",
+   "evidencia": "tendência frio→quente coerente; curva pendente"
+  },
+  {
+   "id": "ar",
+   "ordem": 10,
+   "curto": "Ar",
+   "nome": "Temperatura do ar de admissão",
+   "unidade": "°C",
+   "bloco": 0,
+   "byte": 13,
+   "tipo": "curva",
+   "escala": [
+    -40,
+    160
+   ],
+   "curva": "temperatura",
+   "faixas": [
+    {
+     "quando": "sempre",
+     "normal": [
+      -20,
+      65
+     ],
+     "atencao": [
+      -30,
+      80
+     ],
+     "acima": "ar de admissão muito quente",
+     "nota": "referência: 25 a 65 °C com o motor quente"
+    }
+   ],
+   "nivel": "V2",
+   "evidencia": "20–27 °C; curva pendente"
+  },
+  {
+   "id": "bobina_14",
+   "ordem": 11,
+   "curto": "Bobina 1-4",
+   "nome": "Tempo de carga da bobina 1-4",
+   "unidade": "ms",
+   "bloco": 1,
+   "byte": 12,
+   "tipo": "u16",
+   "fator": 0.004,
+   "offset": 0,
+   "decimais": 2,
+   "escala": [
+    0,
+    40
+   ],
+   "faixas": [
+    {
+     "quando": "ligado",
+     "normal": [
+      2.8,
+      3.6
+     ],
+     "atencao": [
+      2.4,
+      4.2
+     ],
+     "nota": "referência: 3,10 a 3,20 ms; carro: 3,38 ms"
+    }
+   ],
+   "nivel": "V1",
+   "evidencia": "3,4–6,4 ms, sem referência"
+  },
+  {
+   "id": "bobina_23",
+   "ordem": 12,
+   "curto": "Bobina 2-3",
+   "nome": "Tempo de carga da bobina 2-3",
+   "unidade": "ms",
+   "bloco": 1,
+   "byte": 14,
+   "tipo": "u16",
+   "fator": 0.004,
+   "offset": 0,
+   "decimais": 2,
+   "escala": [
+    0,
+    40
+   ],
+   "faixas": [
+    {
+     "quando": "ligado",
+     "normal": [
+      2.8,
+      3.6
+     ],
+     "atencao": [
+      2.4,
+      4.2
+     ],
+     "nota": "referência: 3,10 a 3,20 ms; carro: 3,37 ms"
+    }
+   ],
+   "nivel": "V1",
+   "evidencia": "3,4–6,4 ms, sem referência"
+  },
+  {
+   "id": "injecao",
+   "ordem": 13,
+   "curto": "Injeção",
+   "nome": "Tempo de injeção",
+   "unidade": "ms",
+   "bloco": 1,
+   "byte": 8,
+   "tipo": "u16",
+   "fator": 0.004,
+   "offset": 0,
+   "decimais": 2,
+   "escala": [
+    0,
+    40
+   ],
+   "faixas": [
+    {
+     "quando": "marcha_lenta_quente",
+     "normal": [
+      1.2,
+      2.0
+     ],
+     "atencao": [
+      1.0,
+      2.6
+     ],
+     "nota": "referência: 1,2 a 2 ms em marcha lenta"
+    }
+   ],
+   "nivel": "V2",
+   "evidencia": "1,46–1,71 ms em marcha lenta"
+  },
+  {
+   "id": "motor_passo",
+   "ordem": 14,
+   "curto": "Motor de passo",
+   "nome": "Motor de passo da marcha lenta",
+   "unidade": "passos",
+   "bloco": 1,
+   "byte": 16,
+   "tipo": "u8",
+   "fator": 1,
+   "offset": 0,
+   "decimais": 0,
+   "escala": [
+    0,
+    255
+   ],
+   "obs": "Frio fica em ~70–90 passos; quente, ~15–40.",
+   "faixas": [
+    {
+     "quando": "marcha_lenta_quente",
+     "normal": [
+      14,
+      40
+     ],
+     "atencao": [
+      8,
+      60
+     ],
+     "nota": "referência: 20 a 30 passos; carro quente: 15–23"
+    }
+   ],
+   "nivel": "V2",
+   "evidencia": "98–99 parado frio; 13–37 quente"
+  },
+  {
+   "id": "lambda",
+   "ordem": 15,
+   "curto": "Lambda",
+   "nome": "Sonda lambda",
+   "unidade": "mV",
+   "bloco": 0,
+   "byte": 17,
+   "tipo": "u8",
+   "fator": 9.8,
+   "offset": 0,
+   "decimais": 0,
+   "escala": [
+    0,
+    2000
+   ],
+   "analise": "lambda",
+   "obs": "Só vale com o motor quente (água > ~80 °C); frio, a central ignora a sonda.",
+   "nivel": "V1",
+   "evidencia": "451 mV parado; 755–862 mV ligado (sonda presa, falha 295)"
+  },
+  {
+   "id": "velocidade",
+   "ordem": 17,
+   "curto": "Velocidade",
+   "nome": "Velocidade do veículo",
+   "unidade": "km/h",
+   "bloco": 0,
+   "byte": 19,
+   "tipo": "u8",
+   "fator": 1,
+   "offset": 0,
+   "decimais": 0,
+   "escala": [
+    0,
+    400
+   ],
+   "faixas": [
+    {
+     "quando": "sempre",
+     "normal": [
+      0,
+      190
+     ],
+     "atencao": [
+      0,
+      220
+     ]
+    }
+   ],
+   "nivel": "V1",
+   "evidencia": "sempre 0 (carro parado)"
+  },
+  {
+   "id": "rele_principal",
+   "ordem": 18,
+   "curto": "Relé principal",
+   "nome": "Comando do relé principal",
+   "unidade": "",
+   "bloco": 1,
+   "byte": 19,
+   "tipo": "bit",
+   "bit": 5,
+   "valores": {
+    "0": "não",
+    "1": "sim"
+   },
+   "faixas": [
+    {
+     "quando": "ligado",
+     "normal_valor": 1,
+     "msg": "relé principal desligado com motor ligado"
+    }
+   ],
+   "nivel": "V1",
+   "evidencia": "sempre 1"
+  },
+  {
+   "id": "alim_central",
+   "ordem": 19,
+   "curto": "Alim. central",
+   "nome": "Comando de alimentação da central",
+   "unidade": "",
+   "bloco": 1,
+   "byte": 20,
+   "tipo": "bit",
+   "bit": 0,
+   "valores": {
+    "0": "não",
+    "1": "sim"
+   },
+   "faixas": [
+    {
+     "quando": "ligado",
+     "normal_valor": 1,
+     "msg": "alimentação da central desligada"
+    }
+   ],
+   "nivel": "V1",
+   "evidencia": "sempre 1"
+  },
+  {
+   "id": "luz_injecao",
+   "ordem": 20,
+   "curto": "Luz injeção",
+   "nome": "Comando da luz de aviso de diagnóstico",
+   "unidade": "",
+   "bloco": 1,
+   "byte": 20,
+   "tipo": "bit",
+   "bit": 3,
+   "valores": {
+    "0": "não",
+    "1": "sim"
+   },
+   "luz_falha": true,
+   "faixas": [
+    {
+     "quando": "sempre",
+     "normal_valor": 0,
+     "msg": "luz de injeção acesa"
+    }
+   ],
+   "nivel": "V1",
+   "evidencia": "sempre 1 (falha 295 presente)"
+  },
+  {
+   "id": "ac_termistor",
+   "ordem": 21,
+   "curto": "Termistor A/C",
+   "nome": "Entrada do termistor do ar-condicionado",
+   "unidade": "",
+   "bloco": 0,
+   "byte": 20,
+   "tipo": "bit",
+   "bit": 2,
+   "valores": {
+    "0": "não",
+    "1": "sim"
+   },
+   "nivel": "V1",
+   "evidencia": "sempre 0"
+  },
+  {
+   "id": "ac_autorizacao",
+   "ordem": 22,
+   "curto": "Autoriz. A/C",
+   "nome": "Autorização do ar-condicionado",
+   "unidade": "",
+   "bloco": 0,
+   "byte": 24,
+   "tipo": "bit",
+   "bit": 6,
+   "valores": {
+    "0": "não",
+    "1": "sim"
+   },
+   "nivel": "V1",
+   "evidencia": "sempre 0"
+  }
+ ],
+ "curvas": {
+  "temperatura": {
+   "tipo": "polinomio",
+   "coef": [
+    133.096,
+    -1.9136,
+    0.0114865,
+    -2.70109e-05
+   ],
+   "min": -40.0,
+   "max": 130.0,
+   "nivel": "pendente",
+   "nota": "coeficientes ainda não medidos com termômetro; ver docs/PROTOCOLO-SL96.md"
+  }
+ },
+ "condicoes": {
+  "sempre": {
+   "texto": "sempre",
+   "regras": [],
+   "rotulo": ""
+  },
+  "ligado": {
+   "texto": "motor ligado (RPM > 400)",
+   "regras": [
+    {
+     "metrica": "rpm",
+     "op": ">",
+     "valor": 400
+    }
+   ],
+   "rotulo": "com motor ligado"
+  },
+  "desligado": {
+   "texto": "motor parado",
+   "regras": [
+    {
+     "metrica": "rpm",
+     "op": "<=",
+     "valor": 400
+    }
+   ],
+   "rotulo": "com motor parado"
+  },
+  "quente": {
+   "texto": "motor ligado e quente (água ≥ 80 °C)",
+   "regras": [
+    {
+     "condicao": "ligado"
+    },
+    {
+     "metrica": "agua",
+     "op": ">=",
+     "valor": 80
+    }
+   ],
+   "rotulo": "com motor quente"
+  },
+  "pedal_solto": {
+   "texto": "pedal solto (borboleta em marcha lenta)",
+   "regras": [
+    {
+     "metrica": "pedal",
+     "op": "==",
+     "valor": 16
+    }
+   ],
+   "rotulo": "com pedal solto"
+  },
+  "marcha_lenta_quente": {
+   "texto": "marcha lenta, motor quente e carro parado",
+   "regras": [
+    {
+     "condicao": "quente"
+    },
+    {
+     "condicao": "pedal_solto"
+    },
+    {
+     "metrica": "velocidade",
+     "op": "==",
+     "valor": 0
+    }
+   ],
+   "rotulo": "em marcha lenta"
+  },
+  "carga_parcial": {
+   "texto": "motor ligado, pedal parcialmente pisado",
+   "rotulo": "em carga parcial",
+   "regras": [
+    {
+     "condicao": "ligado"
+    },
+    {
+     "metrica": "pedal",
+     "op": "==",
+     "valor": 0
+    }
+   ],
+   "nota": "estado 0 do pedal ainda não visto em captura; sem faixas por enquanto"
+  },
+  "plena_carga": {
+   "texto": "motor ligado, pedal a fundo",
+   "rotulo": "em plena carga",
+   "regras": [
+    {
+     "condicao": "ligado"
+    },
+    {
+     "metrica": "pedal",
+     "op": "==",
+     "valor": 64
+    }
+   ],
+   "nota": "estado 64 do pedal ainda não visto em captura; sem faixas por enquanto"
+  }
+ },
+ "falhas": {
+  "tipos": {
+   "1": {
+    "nome": "coerência",
+    "nivel": "V1"
+   },
+   "2": {
+    "nome": "curto-circuito ao positivo",
+    "nivel": "V1"
+   }
+  },
+  "codigos": {
+   "33": {
+    "nome": "Sensor de temperatura do ar",
+    "nivel": "pendente",
+    "causas": [
+     "conector oxidado ou solto",
+     "sensor aberto ou em curto",
+     "chicote rompido"
+    ]
+   },
+   "34": {
+    "nome": "Sensor de temperatura da água",
+    "nivel": "pendente",
+    "causas": [
+     "sensor de 2 fios da central (o de 1 fio é do painel)",
+     "conector oxidado",
+     "chicote; sintomas: partida difícil a frio, consumo alto, ventoinha"
+    ]
+   },
+   "35": {
+    "nome": "Potenciômetro da borboleta (TPS)",
+    "nivel": "pendente",
+    "causas": [
+     "pista do potenciômetro gasta (engasgo ao acelerar)",
+     "conector",
+     "borboleta desajustada"
+    ]
+   },
+   "36": {
+    "nome": "Sensor de velocidade do veículo",
+    "nivel": "pendente",
+    "causas": [
+     "sensor na caixa de câmbio",
+     "chicote/conector",
+     "sintoma: velocímetro parado, marcha lenta oscila ao parar"
+    ]
+   },
+   "38": {
+    "nome": "Sensor de pressão do coletor (MAP)",
+    "nivel": "pendente",
+    "causas": [
+     "mangueira de vácuo do sensor furada, solta ou com óleo",
+     "sensor",
+     "conector; sintomas: falta de força, consumo, fumaça"
+    ]
+   },
+   "40": {
+    "nome": "Sensor de rotação (PMS)",
+    "nivel": "pendente",
+    "causas": [
+     "sensor magnético sujo ou com folga ao volante",
+     "chicote",
+     "sintoma: motor não pega ou morre do nada"
+    ]
+   },
+   "41": {
+    "nome": "Sensor de detonação",
+    "nivel": "V1",
+    "causas": [
+     "torque de aperto do sensor (apertar a ~20 N·m)",
+     "conector/chicote",
+     "ruído mecânico (\"tec tec\": tuchos, folga) lido como detonação",
+     "gasolina de baixa octanagem"
+    ]
+   },
+   "42": {
+    "nome": "Sonda lambda",
+    "nivel": "V1",
+    "causas": [
+     "sonda envelhecida ou contaminada (óleo, aditivo, silicone)",
+     "aquecimento da sonda",
+     "entrada de ar falso ou escapamento furado antes da sonda",
+     "chicote da sonda"
+    ]
+   },
+   "44": {
+    "nome": "Sensor de referência do cilindro 1",
+    "nivel": "pendente",
+    "causas": [
+     "sensor de fase",
+     "chicote/conector"
+    ]
+   },
+   "65": {
+    "nome": "Informação da direção assistida",
+    "nivel": "pendente",
+    "causas": [
+     "pressostato da direção hidráulica",
+     "chicote"
+    ]
+   },
+   "69": {
+    "nome": "Informação do piloto automático",
+    "nivel": "pendente",
+    "causas": [
+     "normalmente não usado no 306"
+    ]
+   },
+   "161": {
+    "nome": "Relé da bomba de combustível",
+    "nivel": "pendente",
+    "causas": [
+     "relé duplo (relé principal) com solda fria",
+     "conector",
+     "bomba"
+    ]
+   },
+   "165": {
+    "nome": "Motor de passo da marcha lenta",
+    "nivel": "pendente",
+    "causas": [
+     "corpo de borboleta e motor de passo sujos",
+     "conector",
+     "sintoma: marcha lenta instável, morre ao parar"
+    ]
+   },
+   "170": {
+    "nome": "Eletroválvula de purga do canister",
+    "nivel": "pendente",
+    "causas": [
+     "válvula travada aberta (mistura rica em marcha lenta)",
+     "mangueiras",
+     "conector"
+    ]
+   },
+   "171": {
+    "nome": "Relé do aquecimento da sonda lambda",
+    "nivel": "pendente",
+    "causas": [
+     "relé/fusível",
+     "resistência de aquecimento da sonda aberta"
+    ]
+   },
+   "176": {
+    "nome": "Relé do ar-condicionado",
+    "nivel": "pendente",
+    "causas": [
+     "relé",
+     "chicote"
+    ]
+   },
+   "193": {
+    "nome": "Injetor dos cilindros 1-4",
+    "nivel": "pendente",
+    "causas": [
+     "bobina do injetor aberta/curto",
+     "conector",
+     "chicote"
+    ]
+   },
+   "194": {
+    "nome": "Injetor dos cilindros 2-3",
+    "nivel": "pendente",
+    "causas": [
+     "bobina do injetor aberta/curto",
+     "conector",
+     "chicote"
+    ]
+   },
+   "195": {
+    "nome": "Injetor dos cilindros 3-4",
+    "nivel": "pendente",
+    "causas": [
+     "bobina do injetor aberta/curto",
+     "conector",
+     "chicote"
+    ]
+   },
+   "199": {
+    "nome": "Relé do ar-condicionado",
+    "nivel": "pendente",
+    "causas": [
+     "relé",
+     "chicote"
+    ]
+   },
+   "225": {
+    "nome": "Bobina de ignição 1-4",
+    "nivel": "pendente",
+    "causas": [
+     "bobina dupla (falha em 2 cilindros)",
+     "cabos de vela",
+     "velas"
+    ]
+   },
+   "226": {
+    "nome": "Bobina de ignição 2-3",
+    "nivel": "pendente",
+    "causas": [
+     "bobina dupla (falha em 2 cilindros)",
+     "cabos de vela",
+     "velas"
+    ]
+   },
+   "227": {
+    "nome": "Bobina de ignição 3-4",
+    "nivel": "pendente",
+    "causas": [
+     "bobina",
+     "cabos de vela",
+     "velas"
+    ]
+   },
+   "290": {
+    "nome": "Regulação da marcha lenta",
+    "nivel": "pendente",
+    "causas": [
+     "entrada de ar falso",
+     "corpo de borboleta sujo",
+     "motor de passo",
+     "borboleta desajustada (a central marca 16° em repouso; referência 11–12°)"
+    ]
+   },
+   "291": {
+    "nome": "Autoadaptação da riqueza (limite)",
+    "nivel": "pendente",
+    "causas": [
+     "entrada de ar falso",
+     "pressão de combustível",
+     "injetores",
+     "sonda lambda"
+    ]
+   },
+   "292": {
+    "nome": "Autoadaptação da riqueza (limite)",
+    "nivel": "pendente",
+    "causas": [
+     "entrada de ar falso",
+     "pressão de combustível",
+     "injetores",
+     "sonda lambda"
+    ]
+   },
+   "293": {
+    "nome": "Regulação anti-detonação",
+    "nivel": "pendente",
+    "causas": [
+     "detonação frequente: gasolina ruim, carvão na câmara, avanço",
+     "sensor de detonação mal apertado",
+     "ruído mecânico"
+    ]
+   },
+   "295": {
+    "nome": "Regulação de riqueza",
+    "nivel": "V1",
+    "causas": [
+     "a central não consegue manter a mistura: sonda presa em rico ou pobre",
+     "rico: pressão de combustível alta/regulador, injetor pingando, canister travado aberto",
+     "pobre: entrada de ar falso, pressão baixa, injetor entupido",
+     "sonda lambda morta/preguiçosa"
+    ]
+   },
+   "385": {
+    "nome": "Central (unidade de controle)",
+    "nivel": "pendente",
+    "causas": [
+     "alimentação/aterramento da central",
+     "falha interna"
+    ]
+   },
+   "386": {
+    "nome": "Teleprogramação da central",
+    "nivel": "pendente",
+    "causas": [
+     "programação interrompida ou corrompida"
+    ]
+   },
+   "387": {
+    "nome": "Central: shunt de ignição",
+    "nivel": "pendente",
+    "causas": [
+     "aterramento",
+     "falha interna"
+    ]
+   },
+   "388": {
+    "nome": "Central: módulo de detonação",
+    "nivel": "pendente",
+    "causas": [
+     "falha interna",
+     "sensor de detonação"
+    ]
+   },
+   "417": {
+    "nome": "Tensão da bateria",
+    "nivel": "pendente",
+    "causas": [
+     "alternador/regulador",
+     "bateria",
+     "aterramentos e terminais"
+    ]
+   }
+  }
+ },
+ "escrita": [
+  {
+   "id": "apagar_falhas",
+   "tipo": "apagar_falhas",
+   "nome": "Apagar códigos de falha",
+   "pedido": "C3",
+   "nivel": "V1",
+   "aviso": "Apaga também as memorizadas: anote antes. Validado uma vez, com motor ligado."
+  },
+  {
+   "id": "atuador_luz_injecao",
+   "tipo": "atuador",
+   "nome": "Luz de aviso de falha da injeção",
+   "pedido": "B4 06",
+   "nivel": "V1",
+   "perigoso": false,
+   "aviso": "A luz pisca e não para sozinha; para ao desligar a chave. Comando de parada desconhecido."
+  }
+ ]
+}

@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>psascan · teste dos widgets</title>
+<link rel="icon" href="/static/icone.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/api/tema.css" id="tema-css">
+<link rel="stylesheet" href="/static/app.css">
+<style>
+  body{padding:0 16px 40px}
+  .t-topo{position:sticky;top:0;z-index:10;display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:10px 0;background:var(--bg);border-bottom:1px solid var(--line)}
+  .t-topo label{display:flex;align-items:center;gap:8px}
+  .t-topo input[type=range]{width:260px}
+  .t-topo output{font-family:var(--num);min-width:4ch}
+  .t-tipo{margin:26px 0 8px}
+  .t-tipo h2{margin-bottom:2px}
+  .t-linha{display:flex;flex-wrap:wrap;gap:20px 28px;align-items:flex-start}
+  .t-q figcaption{font-size:12.5px;color:var(--muted);margin:0 0 4px}
+  .t-q{margin:0}
+  .t-q .t-area{position:relative;outline:1px dashed var(--line-2);outline-offset:3px}
+</style>
+</head>
+<body>
+<div class="t-topo">
+  <b>Teste dos widgets</b>
+  <label>Valor <input type="range" id="pct" min="0" max="100" step="0.5" value="45"><output id="pct-o">45 %</output></label>
+  <button class="btn peq" id="animar">Animar</button>
+  <label><input type="checkbox" id="com-falhas" checked> falhas</label>
+  <label><input type="checkbox" id="sem-valor"> sem leitura</label>
+  <button class="btn peq" id="recriar">Recriar</button>
+  <button class="btn peq fantasma" id="claro">Claro/escuro</button>
+  <span class="mut" id="info"></span>
+</div>
+<div id="corpo"></div>
+<script type="module">
+import { criarHost, aceita } from './host.js';
+
+const $ = s => document.querySelector(s);
+const [catalogo, parametros, tema] = await Promise.all([
+  fetch('./catalogo.json').then(r => r.json()),
+  fetch('/api/parametros').then(r => r.json()),
+  fetch('/api/tema').then(r => r.json()),
+]);
+const params = parametros.parametros;
+$('#info').textContent = 'tema "' + tema.id + '" · ' + params.length + ' métricas do perfil';
+
+// ---------------------------------------------------------------- dados falsos
+const est = { pct: 45, animando: false, falhas: true, semValor: false };
+const escala = m => [m.min ?? 0, m.max ?? 100];
+const fmt = (v, d) => Number(v).toFixed(d).replace('.', ',');
+
+function numeroDe(m, pct) {
+  if (m.tipo_perfil === 'bit') return pct >= 50 ? 1 : 0;
+  if (m.tipo_perfil === 'enum') {
+    const chaves = Object.keys(m.mascaras || { 0: '' }).map(Number).sort((a, b) => a - b);
+    return chaves[Math.min(chaves.length - 1, Math.floor(pct / 100 * chaves.length))];
+  }
+  const [lo, hi] = escala(m);
+  return lo + (hi - lo) * pct / 100;
+}
+
+const fonte = {
+  tema: tema.painel,
+  temaId: tema.id,
+  metrica: id => params.find(p => p.id === id),
+  valor(m) {
+    if (est.semValor) return null;
+    const n = numeroDe(m, est.pct);
+    let texto;
+    if (m.tipo_perfil === 'bit') texto = m.textos[n];
+    else if (m.tipo_perfil === 'enum') texto = m.mascaras[n];
+    else texto = fmt(n, m.decimais);
+    return { numero: n, texto, bruto: n };
+  },
+  avaliacao(m) {
+    if (est.semValor || m.tipo_perfil === 'bit' || m.tipo_perfil === 'enum') {
+      return { estado: 'neutro', lado: null, msg: '', condicao: '', faixa: null };
+    }
+    const [lo, hi] = escala(m), p = est.pct;
+    const faixa = [lo + (hi - lo) * .25, lo + (hi - lo) * .75];
+    if (p < 15) return { estado: 'fora', lado: 'abaixo', msg: 'muito baixo', condicao: 'em marcha lenta', faixa };
+    if (p < 25) return { estado: 'atencao', lado: 'abaixo', msg: 'baixo', condicao: 'em marcha lenta', faixa };
+    if (p <= 75) return { estado: 'normal', lado: null, msg: '', condicao: 'em marcha lenta', faixa };
+    if (p <= 90) return { estado: 'atencao', lado: 'acima', msg: 'alto', condicao: 'em marcha lenta', faixa };
+    return { estado: 'fora', lado: 'acima', msg: 'muito alto', condicao: 'em marcha lenta', faixa };
+  },
+  historico(m, seg) {
+    if (est.semValor) return { t: [], v: [] };
+    const agora = Date.now() / 1000, t = [], v = [];
+    const [lo, hi] = escala(m), amp = (hi - lo) * .12;
+    for (let s = Math.min(seg, 600); s >= 0; s -= .5) {
+      t.push(agora - s);
+      const base = numeroDe(m, est.pct);
+      v.push(Math.min(hi, Math.max(lo, base + amp * Math.sin((agora - s) / 7) * (s / seg) + amp * .3 * Math.sin((agora - s) * 2.3))));
+    }
+    return { t, v };
+  },
+  falhas() {
+    if (!est.falhas) return { presentes: [], memorizadas: [], hora: '2026-01-01 10:00:00' };
+    return { hora: '2026-01-01 10:00:00',
+      presentes: [{ codigo: 0x123, hex: '123', nome: 'Sensor de temperatura do ar', tipo_nome: 'curto-circuito ao negativo' }],
+      memorizadas: [{ codigo: 0x0A4, hex: '0A4', nome: 'Sonda lambda', tipo_nome: 'sinal incoerente' },
+                    { codigo: 0x1C0, hex: '1C0', nome: 'Bobina de ignição 1-4', tipo_nome: 'circuito aberto' }] };
+  },
+};
+
+// ---------------------------------------------------------------- o que mostrar
+const primeira = (tipo, ...prefs) => {
+  const cat = catalogo.tipos[tipo];
+  return prefs.map(id => params.find(p => p.id === id)).find(p => p && aceita(cat, p)) || params.find(p => aceita(cat, p));
+};
+const tamanhos = (tipo, cat) => {
+  const [a, b] = cat.minimo, [c, d] = cat.maximo;
+  const rz = { barra: [8, 3], falhas: [8, 4] }[tipo] || [Math.min(c, 8), Math.min(d, 6)];
+  const meio = [Math.min(c, Math.max(a, Math.round((a + rz[0]) / 2))), Math.min(d, Math.max(b, Math.round((b + rz[1]) / 2)))];
+  return [['mínimo', cat.minimo], ['médio', meio], ['máximo razoável', rz]];
+};
+const existe = id => !!fonte.metrica(id);
+
+function variantes(tipo) {
+  const m = tipo === 'falhas' ? null : primeira(tipo, tipo === 'mostrador' ? 'rpm' : 'agua', 'bateria');
+  const base = [{ rotulo: '', metrica: m?.id, opcoes: undefined }];
+  if (tipo === 'mostrador') {
+    base[0].opcoes = { escala: { min: 0, max: 7000, maior: 1000, divisor_rotulo: 1000, alerta: 6500 }, centro: { conteudo: 'rolos' } };
+    if (existe('velocidade') && existe('agua')) {
+      base.push({ rotulo: 'velocidade com água no arco e valor digital', metrica: 'velocidade',
+        opcoes: { escala: { min: 0, max: 200, maior: 20 }, centro: { conteudo: 'digital' }, arco_inferior: { metrica: 'agua', min: 50, max: 130 } } });
+    }
+  }
+  if (tipo === 'barra') base.push({ rotulo: 'vertical', metrica: m.id, opcoes: { orientacao: 'vertical' } });
+  if (tipo === 'numero' || tipo === 'estado') {
+    const d = params.find(p => p.tipo_perfil === 'enum') || params.find(p => p.tipo_perfil === 'bit');
+    if (d) base.push({ rotulo: 'métrica discreta', metrica: d.id });
+  }
+  if (tipo === 'luz') {
+    const bit = params.find(p => p.tipo_perfil === 'bit');
+    base[0].metrica = bit?.id;
+    base.push({ rotulo: 'luz das falhas', metrica: undefined, opcoes: { fonte: 'falhas', rotulo: 'falhas' } });
+  }
+  return base;
+}
+
+// ---------------------------------------------------------------- montagem
+let hosts = [];
+const CEL = 72, GAP = 8;
+
+function montar() {
+  hosts.forEach(h => h.destruir());
+  hosts = [];
+  const corpo = $('#corpo');
+  corpo.replaceChildren();
+  for (const [tipo, cat] of Object.entries(catalogo.tipos)) {
+    const sec = document.createElement('section');
+    sec.className = 't-tipo';
+    sec.innerHTML = '<h2></h2><div class="mut"></div>';
+    sec.querySelector('h2').textContent = tipo + ' · ' + cat.nome;
+    sec.querySelector('.mut').textContent = 'tamanhos ' + cat.minimo.join('×') + ' a ' + cat.maximo.join('×') + ' · aceita ' + (cat.metricas.join(', ') || 'nenhuma métrica');
+    corpo.append(sec);
+    for (const v of variantes(tipo)) {
+      const linha = document.createElement('div');
+      linha.className = 't-linha';
+      linha.style.marginTop = '10px';
+      if (v.rotulo) {
+        const r = document.createElement('div');
+        r.className = 'mut';
+        r.style.cssText = 'width:100%;font-size:13px';
+        r.textContent = '— ' + v.rotulo;
+        sec.append(r);
+      }
+      sec.append(linha);
+      for (const [nome, [l, a]] of tamanhos(tipo, cat)) {
+        const q = document.createElement('figure');
+        q.className = 't-q';
+        const cap = document.createElement('figcaption');
+        cap.textContent = nome + ' ' + l + '×' + a + (v.metrica ? ' · ' + v.metrica : '');
+        const area = document.createElement('div');
+        area.className = 't-area';
+        area.style.width = (l * CEL + (l - 1) * GAP) + 'px';
+        area.style.height = (a * CEL + (a - 1) * GAP) + 'px';
+        q.append(cap, area);
+        linha.append(q);
+        const w = { id: 'teste', tipo, x: 0, y: 0, largura: l, altura: a };
+        if (v.metrica) w.metrica = v.metrica;
+        if (v.opcoes) w.opcoes = v.opcoes;
+        hosts.push(criarHost(area, { layout: { grade: { colunas: l, linhas: a }, widgets: [w] }, catalogo, fonte }));
+      }
+    }
+  }
+}
+
+const atualizar = () => hosts.forEach(h => h.agendar());
+
+$('#pct').oninput = e => { est.pct = +e.target.value; $('#pct-o').textContent = est.pct + ' %'; atualizar(); };
+$('#com-falhas').onchange = e => { est.falhas = e.target.checked; atualizar(); };
+$('#sem-valor').onchange = e => { est.semValor = e.target.checked; atualizar(); };
+$('#recriar').onclick = montar;
+$('#claro').onclick = () => {
+  const claro = document.documentElement.dataset.theme !== 'light';
+  if (claro) document.documentElement.dataset.theme = 'light'; else delete document.documentElement.dataset.theme;
+};
+let timer = null;
+$('#animar').onclick = e => {
+  est.animando = !est.animando;
+  e.target.textContent = est.animando ? 'Parar' : 'Animar';
+  clearInterval(timer);
+  if (est.animando) {
+    const t0 = performance.now();
+    timer = setInterval(() => {
+      est.pct = 50 + 50 * Math.sin((performance.now() - t0) / 3000);
+      $('#pct').value = est.pct;
+      $('#pct-o').textContent = Math.round(est.pct) + ' %';
+      atualizar();
+    }, 120);
+  }
+};
+montar();
+</script>
+</body>
+</html>

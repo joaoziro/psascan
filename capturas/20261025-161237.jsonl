@@ -1,0 +1,130 @@
+{"t": 0.0001, "hora": "16:12:37", "dir": "nota", "texto": "cli: falhas"}
+{"t": 1.1939, "hora": "16:12:38", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 1.1943, "hora": "16:12:38", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 1.3566, "hora": "16:12:38", "dir": "rx", "hex": "80"}
+{"t": 1.3611, "hora": "16:12:38", "dir": "rx", "hex": "05 98 06 00 30 64 c5 a2"}
+{"t": 1.3618, "hora": "16:12:38", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 1.3622, "hora": "16:12:38", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 1.4211, "hora": "16:12:38", "dir": "rx", "hex": "80 06 7f 13 00 00 00 00 58 41"}
+{"t": 1.4218, "hora": "16:12:38", "dir": "nota", "texto": "configurar linha K"}
+{"t": 1.4222, "hora": "16:12:38", "dir": "tx", "hex": "80 0a 07 00 04 00 00 00 68 3c 0b 05 89 e7"}
+{"t": 1.4561, "hora": "16:12:38", "dir": "rx", "hex": "80 06 7f 07 00 00 00 00"}
+{"t": 1.4724, "hora": "16:12:38", "dir": "rx", "hex": "08 d8"}
+{"t": 1.4731, "hora": "16:12:38", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 1.4735, "hora": "16:12:38", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 1.6342, "hora": "16:12:38", "dir": "rx", "hex": "80"}
+{"t": 1.6373, "hora": "16:12:38", "dir": "rx", "hex": "06 7f 04 13 00 00 00 a8 23"}
+{"t": 1.7883, "hora": "16:12:39", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 1.7888, "hora": "16:12:39", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 1.9473, "hora": "16:12:39", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 2.098, "hora": "16:12:39", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 2.0984, "hora": "16:12:39", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 2.2693, "hora": "16:12:39", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 2.4203, "hora": "16:12:39", "dir": "nota", "texto": "ler códigos de falha (33)"}
+{"t": 2.4209, "hora": "16:12:39", "dir": "tx", "hex": "80 06 04 01 03 82 33 4a b9 e6"}
+{"t": 2.5781, "hora": "16:12:39", "dir": "rx", "hex": "80 06"}
+{"t": 2.5802, "hora": "16:12:39", "dir": "rx", "hex": "7f 04 13 00 00 00 a8 23"}
+{"t": 2.5806, "hora": "16:12:39", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 04 13 00 00 00); reconectando"}
+{"t": 2.5808, "hora": "16:12:39", "dir": "nota", "texto": "fechado"}
+{"t": 3.3762, "hora": "16:12:40", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 3.3768, "hora": "16:12:40", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 3.5174, "hora": "16:12:40", "dir": "rx", "hex": "80 05 98 06 00 30 64 c5 a2"}
+{"t": 3.5181, "hora": "16:12:40", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 3.5184, "hora": "16:12:40", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 3.5512, "hora": "16:12:40", "dir": "rx", "hex": "80 06 7f 13 00"}
+{"t": 3.5613, "hora": "16:12:40", "dir": "rx", "hex": "00 00 00 58 41"}
+{"t": 3.5617, "hora": "16:12:40", "dir": "nota", "texto": "configurar linha K"}
+{"t": 3.562, "hora": "16:12:40", "dir": "tx", "hex": "80 0a 07 00 04 00 00 00 68 3c 0b 05 89 e7"}
+{"t": 3.6204, "hora": "16:12:40", "dir": "rx", "hex": "80 06 7f 07 00 00 00 00 08 d8"}
+{"t": 3.6211, "hora": "16:12:40", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 3.6215, "hora": "16:12:40", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 3.7833, "hora": "16:12:41", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 3.9341, "hora": "16:12:41", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 3.9349, "hora": "16:12:41", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 4.095, "hora": "16:12:41", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 4.2457, "hora": "16:12:41", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 4.2463, "hora": "16:12:41", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 4.4031, "hora": "16:12:41", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 4.5539, "hora": "16:12:41", "dir": "nota", "texto": "ler códigos de falha (33)"}
+{"t": 4.5543, "hora": "16:12:41", "dir": "tx", "hex": "80 06 04 01 03 82 33 4a b9 e6"}
+{"t": 4.7132, "hora": "16:12:41", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 4.7137, "hora": "16:12:41", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 04 13 00 00 00); reconectando"}
+{"t": 4.7139, "hora": "16:12:41", "dir": "nota", "texto": "fechado"}
+{"t": 5.9833, "hora": "16:12:43", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 5.9839, "hora": "16:12:43", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 6.1212, "hora": "16:12:43", "dir": "rx", "hex": "80 05 98 06 00 30 64 c5 a2"}
+{"t": 6.122, "hora": "16:12:43", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 6.1222, "hora": "16:12:43", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 6.1803, "hora": "16:12:43", "dir": "rx", "hex": "80 06 7f 13 00 00 00 00 58 41"}
+{"t": 6.1807, "hora": "16:12:43", "dir": "nota", "texto": "configurar linha K"}
+{"t": 6.1811, "hora": "16:12:43", "dir": "tx", "hex": "80 0a 07 00 04 00 00 00 68 3c 0b 05 89 e7"}
+{"t": 6.2134, "hora": "16:12:43", "dir": "rx", "hex": "80"}
+{"t": 6.2194, "hora": "16:12:43", "dir": "rx", "hex": "06 7f 07 00 00 00 00 08 d8"}
+{"t": 6.22, "hora": "16:12:43", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 6.2205, "hora": "16:12:43", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 6.3793, "hora": "16:12:43", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 6.5302, "hora": "16:12:43", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 6.5313, "hora": "16:12:43", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 6.6892, "hora": "16:12:43", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 6.8402, "hora": "16:12:44", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 6.8408, "hora": "16:12:44", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 6.9982, "hora": "16:12:44", "dir": "rx", "hex": "80"}
+{"t": 7.006, "hora": "16:12:44", "dir": "rx", "hex": "06 7f 04 13 00 00 00 a8 23"}
+{"t": 7.1567, "hora": "16:12:44", "dir": "nota", "texto": "ler códigos de falha (33)"}
+{"t": 7.1574, "hora": "16:12:44", "dir": "tx", "hex": "80 06 04 01 03 82 33 4a b9 e6"}
+{"t": 7.3163, "hora": "16:12:44", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 7.3169, "hora": "16:12:44", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 04 13 00 00 00); reconectando"}
+{"t": 7.3171, "hora": "16:12:44", "dir": "nota", "texto": "fechado"}
+{"t": 9.5851, "hora": "16:12:46", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 9.5855, "hora": "16:12:46", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 9.7212, "hora": "16:12:46", "dir": "rx", "hex": "80"}
+{"t": 9.7262, "hora": "16:12:46", "dir": "rx", "hex": "05 98 06 00 30 64 c5 a2"}
+{"t": 9.7297, "hora": "16:12:46", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 9.7302, "hora": "16:12:46", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 9.7634, "hora": "16:12:47", "dir": "rx", "hex": "80 06 7f 13 00 00 00 00"}
+{"t": 9.7772, "hora": "16:12:47", "dir": "rx", "hex": "58 41"}
+{"t": 9.7777, "hora": "16:12:47", "dir": "nota", "texto": "configurar linha K"}
+{"t": 9.7781, "hora": "16:12:47", "dir": "tx", "hex": "80 0a 07 00 04 00 00 00 68 3c 0b 05 89 e7"}
+{"t": 9.8212, "hora": "16:12:47", "dir": "rx", "hex": "80"}
+{"t": 9.8311, "hora": "16:12:47", "dir": "rx", "hex": "06 7f 07 00 00 00 00 08 d8"}
+{"t": 9.8318, "hora": "16:12:47", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 9.8322, "hora": "16:12:47", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 9.9902, "hora": "16:12:47", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 10.141, "hora": "16:12:47", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 10.1414, "hora": "16:12:47", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 10.2994, "hora": "16:12:47", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 10.4502, "hora": "16:12:47", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 10.4506, "hora": "16:12:47", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 10.6087, "hora": "16:12:47", "dir": "rx", "hex": "80"}
+{"t": 10.6102, "hora": "16:12:47", "dir": "rx", "hex": "06 7f 04 13 00 00 00 a8 23"}
+{"t": 10.7609, "hora": "16:12:48", "dir": "nota", "texto": "ler códigos de falha (33)"}
+{"t": 10.7614, "hora": "16:12:48", "dir": "tx", "hex": "80 06 04 01 03 82 33 4a b9 e6"}
+{"t": 10.9204, "hora": "16:12:48", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 10.9209, "hora": "16:12:48", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 04 13 00 00 00); reconectando"}
+{"t": 10.9211, "hora": "16:12:48", "dir": "nota", "texto": "fechado"}
+{"t": 17.0013, "hora": "16:12:54", "dir": "nota", "texto": "aberto 00:06:66:00:00:01"}
+{"t": 17.0017, "hora": "16:12:54", "dir": "tx", "hex": "80 01 18 31 4f"}
+{"t": 17.1571, "hora": "16:12:54", "dir": "rx", "hex": "80"}
+{"t": 17.1671, "hora": "16:12:54", "dir": "rx", "hex": "05 98 06 00 30 64 c5 a2"}
+{"t": 17.1676, "hora": "16:12:54", "dir": "nota", "texto": "linha K no pino 7"}
+{"t": 17.168, "hora": "16:12:54", "dir": "tx", "hex": "80 04 13 07 03 00 3c 9f"}
+{"t": 17.1981, "hora": "16:12:54", "dir": "rx", "hex": "80 06 7f 13 00"}
+{"t": 17.2084, "hora": "16:12:54", "dir": "rx", "hex": "00 00 00 58 41"}
+{"t": 17.209, "hora": "16:12:54", "dir": "nota", "texto": "configurar linha K"}
+{"t": 17.2094, "hora": "16:12:54", "dir": "tx", "hex": "80 0a 07 00 04 00 00 00 68 3c 0b 05 89 e7"}
+{"t": 17.2432, "hora": "16:12:54", "dir": "rx", "hex": "80 06 7f 07 00 00 00 00 08 d8"}
+{"t": 17.244, "hora": "16:12:54", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 17.2445, "hora": "16:12:54", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 17.4023, "hora": "16:12:54", "dir": "rx", "hex": "80"}
+{"t": 17.4042, "hora": "16:12:54", "dir": "rx", "hex": "06 7f 04 13 00 00 00 a8 23"}
+{"t": 17.5551, "hora": "16:12:54", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 17.5555, "hora": "16:12:54", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 17.7155, "hora": "16:12:54", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 17.8662, "hora": "16:12:55", "dir": "nota", "texto": "início de comunicação (0F)"}
+{"t": 17.8666, "hora": "16:12:55", "dir": "tx", "hex": "80 06 04 01 03 82 0f 6e 9d 9e"}
+{"t": 18.0253, "hora": "16:12:55", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 18.1763, "hora": "16:12:55", "dir": "nota", "texto": "ler códigos de falha (33)"}
+{"t": 18.1767, "hora": "16:12:55", "dir": "tx", "hex": "80 06 04 01 03 82 33 4a b9 e6"}
+{"t": 18.3363, "hora": "16:12:55", "dir": "rx", "hex": "80 06 7f 04 13 00 00 00 a8 23"}
+{"t": 18.3372, "hora": "16:12:55", "dir": "nota", "texto": "falha de comunicação (OSError: dongle respondeu erro: 7f 04 13 00 00 00); reconectando"}
+{"t": 18.3375, "hora": "16:12:55", "dir": "nota", "texto": "fechado"}
